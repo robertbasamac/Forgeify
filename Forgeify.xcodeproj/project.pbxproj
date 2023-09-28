@@ -7,18 +7,28 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0905B4FC2AC599A20016D6F3 /* Exercise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0905B4FB2AC599A20016D6F3 /* Exercise.swift */; };
 		09E28C762AC45A0100A18450 /* ForgeifyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09E28C752AC45A0100A18450 /* ForgeifyApp.swift */; };
 		09E28C782AC45A0100A18450 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09E28C772AC45A0100A18450 /* ContentView.swift */; };
 		09E28C7A2AC45A0200A18450 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 09E28C792AC45A0200A18450 /* Assets.xcassets */; };
 		09E28C7D2AC45A0200A18450 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 09E28C7C2AC45A0200A18450 /* Preview Assets.xcassets */; };
+		09E28C872AC4ADDC00A18450 /* Workout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09E28C862AC4ADDC00A18450 /* Workout.swift */; };
+		09E28C8B2AC4C4AC00A18450 /* ExerciseItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09E28C8A2AC4C4AC00A18450 /* ExerciseItem.swift */; };
+		09E28C8E2AC4D20400A18450 /* WorkoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09E28C8D2AC4D20400A18450 /* WorkoutManager.swift */; };
+		09E28C902AC4D37F00A18450 /* AddWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09E28C8F2AC4D37F00A18450 /* AddWorkoutView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0905B4FB2AC599A20016D6F3 /* Exercise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Exercise.swift; sourceTree = "<group>"; };
 		09E28C722AC45A0100A18450 /* Forgeify.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Forgeify.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		09E28C752AC45A0100A18450 /* ForgeifyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgeifyApp.swift; sourceTree = "<group>"; };
 		09E28C772AC45A0100A18450 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		09E28C792AC45A0200A18450 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		09E28C7C2AC45A0200A18450 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		09E28C862AC4ADDC00A18450 /* Workout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Workout.swift; sourceTree = "<group>"; };
+		09E28C8A2AC4C4AC00A18450 /* ExerciseItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseItem.swift; sourceTree = "<group>"; };
+		09E28C8D2AC4D20400A18450 /* WorkoutManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutManager.swift; sourceTree = "<group>"; };
+		09E28C8F2AC4D37F00A18450 /* AddWorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWorkoutView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,8 +61,10 @@
 		09E28C742AC45A0100A18450 /* Forgeify */ = {
 			isa = PBXGroup;
 			children = (
-				09E28C752AC45A0100A18450 /* ForgeifyApp.swift */,
-				09E28C772AC45A0100A18450 /* ContentView.swift */,
+				09E28C852AC4ADB800A18450 /* App */,
+				09E28C832AC4ADA000A18450 /* Model */,
+				09E28C842AC4ADAC00A18450 /* View */,
+				09E28C8C2AC4D1E900A18450 /* ViewModel */,
 				09E28C792AC45A0200A18450 /* Assets.xcassets */,
 				09E28C7B2AC45A0200A18450 /* Preview Content */,
 			);
@@ -65,6 +77,41 @@
 				09E28C7C2AC45A0200A18450 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		09E28C832AC4ADA000A18450 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				09E28C862AC4ADDC00A18450 /* Workout.swift */,
+				0905B4FB2AC599A20016D6F3 /* Exercise.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		09E28C842AC4ADAC00A18450 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				09E28C772AC45A0100A18450 /* ContentView.swift */,
+				09E28C8A2AC4C4AC00A18450 /* ExerciseItem.swift */,
+				09E28C8F2AC4D37F00A18450 /* AddWorkoutView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		09E28C852AC4ADB800A18450 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				09E28C752AC45A0100A18450 /* ForgeifyApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		09E28C8C2AC4D1E900A18450 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				09E28C8D2AC4D20400A18450 /* WorkoutManager.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -137,8 +184,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				09E28C8B2AC4C4AC00A18450 /* ExerciseItem.swift in Sources */,
 				09E28C782AC45A0100A18450 /* ContentView.swift in Sources */,
+				09E28C8E2AC4D20400A18450 /* WorkoutManager.swift in Sources */,
 				09E28C762AC45A0100A18450 /* ForgeifyApp.swift in Sources */,
+				09E28C902AC4D37F00A18450 /* AddWorkoutView.swift in Sources */,
+				0905B4FC2AC599A20016D6F3 /* Exercise.swift in Sources */,
+				09E28C872AC4ADDC00A18450 /* Workout.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

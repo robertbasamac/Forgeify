@@ -9,9 +9,12 @@ import SwiftUI
 
 @main
 struct ForgeifyApp: App {
+    @StateObject private var workoutManager: WorkoutManager = WorkoutManager()
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(workoutManager)
         }
     }
 }
