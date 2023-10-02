@@ -6,51 +6,107 @@
 //
 
 import Foundation
+import SwiftData
 
-struct Workout: Identifiable {
+@Model
+final class Workout: Identifiable {
     var id: UUID
     var title: String
-    var exercises: [Exercise]
-    var finished: Bool
+    var exercises = [WorkoutExercise]()
     
-    init(id: UUID = .init(), title: String, exercises: [Exercise], finished: Bool = false) {
+    init(id: UUID = .init(), title: String = "", exercises: [WorkoutExercise] = []) {
         self.id = id
         self.title = title
         self.exercises = exercises
-        self.finished = finished
+    }
+    
+    public func subtitle() -> String {
+        let exerciseTitles = self.exercises
+            .map { $0.title.lowercased() }
+            .joined(separator: ", ")
+        
+        return exerciseTitles.isEmpty ? "Empty" : exerciseTitles
     }
 }
 
+// MARK: - Hashable
 extension Workout: Hashable {
     static func == (lhs: Workout, rhs: Workout) -> Bool {
-        lhs.title == rhs.title
+        lhs.title == rhs.title && lhs.exercises == rhs.exercises
     }
 
     func hash(into hasher: inout Hasher) {
         hasher.combine(title)
+        hasher.combine(exercises)
     }
 }
 
+// MARK: - Preview data
 extension Workout {
     static var previewWorkouts: [Workout] {
         [
             Workout(title: "Push day",
                     exercises: [
-                        Exercise(title: "Bench Press"),
-                        Exercise(title: "Push-ups"),
-                        Exercise(title: "Cable Flies")
+                        WorkoutExercise(title: "Bench Press",
+                                 sets: [
+                                    ExerciseSet(weight: 10, reps: 12, rest: 60),
+                                    ExerciseSet(weight: 15, reps: 10, rest: 60),
+                                    ExerciseSet(weight: 20, reps: 8, rest: 60)
+                                 ]),
+                        WorkoutExercise(title: "Push-ups",
+                                 sets: [
+                                    ExerciseSet(weight: 10, reps: 12, rest: 60),
+                                    ExerciseSet(weight: 15, reps: 10, rest: 60),
+                                    ExerciseSet(weight: 20, reps: 8, rest: 60)
+                                 ]),
+                        WorkoutExercise(title: "Cable Flies",
+                                 sets: [
+                                    ExerciseSet(weight: 10, reps: 12, rest: 60),
+                                    ExerciseSet(weight: 15, reps: 10, rest: 60),
+                                    ExerciseSet(weight: 20, reps: 8, rest: 60)
+                                 ])
                     ]),
             Workout(title: "Pull day",
                     exercises: [
-                        Exercise(title: "Pull-ups"),
-                        Exercise(title: "Seated Rows"),
-                        Exercise(title: "Biceps Curls")
+                        WorkoutExercise(title: "Pull-ups",
+                                 sets: [
+                                    ExerciseSet(weight: 10, reps: 12, rest: 60),
+                                    ExerciseSet(weight: 15, reps: 10, rest: 60),
+                                    ExerciseSet(weight: 20, reps: 8, rest: 60)
+                                 ]),
+                        WorkoutExercise(title: "Seated Rows",
+                                 sets: [
+                                    ExerciseSet(weight: 10, reps: 12, rest: 60),
+                                    ExerciseSet(weight: 15, reps: 10, rest: 60),
+                                    ExerciseSet(weight: 20, reps: 8, rest: 60)
+                                 ]),
+                        WorkoutExercise(title: "Biceps Curls",
+                                 sets: [
+                                    ExerciseSet(weight: 10, reps: 12, rest: 60),
+                                    ExerciseSet(weight: 15, reps: 10, rest: 60),
+                                    ExerciseSet(weight: 20, reps: 8, rest: 60)
+                                 ])
                     ]),
             Workout(title: "Legs day",
                     exercises: [
-                        Exercise(title: "Squats"),
-                        Exercise(title: "Front Squats"),
-                        Exercise(title: "Single Leg Bulgarian Split Squat")
+                        WorkoutExercise(title: "Squats",
+                                 sets: [
+                                    ExerciseSet(weight: 10, reps: 12, rest: 60),
+                                    ExerciseSet(weight: 15, reps: 10, rest: 60),
+                                    ExerciseSet(weight: 20, reps: 8, rest: 60)
+                                 ]),
+                        WorkoutExercise(title: "Front Squats",
+                                 sets: [
+                                    ExerciseSet(weight: 10, reps: 12, rest: 60),
+                                    ExerciseSet(weight: 15, reps: 10, rest: 60),
+                                    ExerciseSet(weight: 20, reps: 8, rest: 60)
+                                 ]),
+                        WorkoutExercise(title: "Single Leg Bulgarian Split Squat",
+                                 sets: [
+                                    ExerciseSet(weight: 10, reps: 12, rest: 60),
+                                    ExerciseSet(weight: 15, reps: 10, rest: 60),
+                                    ExerciseSet(weight: 20, reps: 8, rest: 60)
+                                 ])
                     ])
         ]
     }
@@ -58,9 +114,24 @@ extension Workout {
     static var previewWorkout: Workout {
         Workout(title: "Legs day",
                 exercises: [
-                    Exercise(title: "Squats"),
-                    Exercise(title: "Front Squats"),
-                    Exercise(title: "Single Leg Bulgarian Split Squat")
+                    WorkoutExercise(title: "Squats",
+                             sets: [
+                                ExerciseSet(weight: 10, reps: 12, rest: 60),
+                                ExerciseSet(weight: 15, reps: 10, rest: 60),
+                                ExerciseSet(weight: 20, reps: 8, rest: 60)
+                             ]),
+                    WorkoutExercise(title: "Front Squats",
+                             sets: [
+                                ExerciseSet(weight: 10, reps: 12, rest: 60),
+                                ExerciseSet(weight: 15, reps: 10, rest: 60),
+                                ExerciseSet(weight: 20, reps: 8, rest: 60)
+                             ]),
+                    WorkoutExercise(title: "Single Leg Bulgarian Split Squat",
+                             sets: [
+                                ExerciseSet(weight: 10, reps: 12, rest: 60),
+                                ExerciseSet(weight: 15, reps: 10, rest: 60),
+                                ExerciseSet(weight: 20, reps: 8, rest: 60)
+                             ])
                 ])
     }
 }

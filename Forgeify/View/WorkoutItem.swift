@@ -13,8 +13,9 @@ struct WorkoutItem: View {
     
     init(workout: Workout) {
         self.workout = workout
-        self.exerciseTitles = getExercisesTitlesString(from: workout)
+        self.exerciseTitles = self.workout.subtitle()
     }
+    
     var body: some View {
         NavigationLink(value: workout) {
             VStack(alignment: .leading) {
@@ -28,15 +29,12 @@ struct WorkoutItem: View {
             }
         }
     }
-    
-    private func getExercisesTitlesString(from workout: Workout) -> String {
-        let exerciseTitles = workout.exercises.map { $0.title.lowercased() }
-        return exerciseTitles.joined(separator: ", ")
-    }
 }
 
 #Preview {
-    List {
-        WorkoutItem(workout: Workout.previewWorkout)
+    NavigationStack {
+        List {
+            WorkoutItem(workout: Workout(title: "Push-ups", exercises: []))
+        }
     }
 }

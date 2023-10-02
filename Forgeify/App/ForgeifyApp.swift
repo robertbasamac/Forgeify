@@ -6,15 +6,15 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct ForgeifyApp: App {
-    @StateObject private var workoutManager: WorkoutManager = WorkoutManager()
     
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environmentObject(workoutManager)
         }
+        .modelContainer(for: [Workout.self, WorkoutExercise.self], isAutosaveEnabled: false, isUndoEnabled: true)
     }
 }

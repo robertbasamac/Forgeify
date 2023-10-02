@@ -6,46 +6,48 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ContentView: View {
-    @EnvironmentObject var workoutManager: WorkoutManager
+    @Environment(\.modelContext) var modelContext
+    @Query var workouts: [Workout]
     
     @State private var showAddWorkout = false
-    @State private var selection: Workout?
     
     var body: some View {
         NavigationStack {
             List {
-                ForEach(workoutManager.workouts) { workout in
+                ForEach(workouts) { workout in
                     WorkoutItem(workout: workout)
-                        .swipeActions(edge: .trailing) {
-                            Button(role: .destructive) {
-                                deleteWorkout(workout)
-                            } label: {
-                                Label("Delete", systemImage: "trash")
-                            }
-                        }
                 }
-                .onDelete(perform: deleteWorkouts(at:))
-
-            }
-            .overlay {
-                if workoutManager.workouts.isEmpty {
-                    ContentUnavailableView {
-                         Label("No Workouts", systemImage: "figure.run.circle")
-                    } description: {
-                         Text("New workouts you create will appear here.")
+                .onDelete { indexSet in
+                    for index in indexSet {
+                        modelContext.delete(workouts[index])
                     }
                 }
             }
             .navigationTitle("Workouts")
-            .navigationDestination(for: Workout.self) { workout in
-                Text(workout.title)
+            .scrollDisabled(workouts.isEmpty)
+            .overlay {
+                if workouts.isEmpty {
+                    ContentUnavailableView {
+                        Label("No Workouts", systemImage: "figure.run.circle")
+                    } description: {
+                        Text("New workouts you create will appear here.\nUse the '+' button above to create new workouts.")
+                    } actions: {
+                        Button {
+                            showAddWorkout.toggle()
+                        } label: {
+                            Text("Add Workout")
+                        }
+                        
+                    }
+                }
             }
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     EditButton()
-                        .disabled(workoutManager.workouts.isEmpty)
+                        .disabled(workouts.isEmpty)
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
@@ -55,26 +57,18 @@ struct ContentView: View {
                     }
                 }
             }
-        }
-        .sheet(isPresented: $showAddWorkout) {
-            NavigationStack {
-                AddWorkoutView()
+            .navigationDestination(for: Workout.self) { workout in
+                Text(workout.title)
+            }
+            .fullScreenCover(isPresented: $showAddWorkout) {
+                NavigationStack {
+                    AddWorkoutView()
+                }
             }
         }
-    }
-    
-    private func deleteWorkouts(at offsets: IndexSet) {
-        withAnimation {
-            offsets.map { workoutManager.workouts[$0] }.forEach(deleteWorkout)
-        }
-    }
-    
-    private func deleteWorkout(_ workout: Workout) {
-        workoutManager.workouts.removeAll { $0.id == workout.id }
     }
 }
 
 #Preview {
     ContentView()
-        .environmentObject(WorkoutManager.preview)
 }

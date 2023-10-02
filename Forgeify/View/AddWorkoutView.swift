@@ -8,92 +8,116 @@
 import SwiftUI
 
 struct AddWorkoutView: View {
-    @EnvironmentObject private var workoutManager: WorkoutManager
-    @Environment(\.dismiss) private var dismiss
+    @Environment(\.modelContext) var modelContext
+    @Environment(\.dismiss) var dismiss
     
     @State private var title: String = ""
-    @State private var exercises: [Exercise] = Exercise.previewExercises
+    @State private var exercises: [WorkoutExercise] = []
+    
+    @State private var showAddExercise: Bool = false
     
     var body: some View {
         Form {
-            Section(header: Text("Workout Title")) {
-                TextField("Enter title here…", text: $title)
-                    .padding(.trailing, 30)
-                    .overlay(alignment: .trailing) {
-                        Button {
-                            title = ""
-                        } label: {
-                            Image(systemName: "xmark.circle")
-                                .foregroundStyle(.secondary)
-                        }
-                        .buttonStyle(.plain)
-                        .opacity(title.isEmpty ? 0 : 1)
-                    }
-            }
-            
-            Section {
-                ForEach($exercises) { exercise in
-                    HStack {
-                        let index = exercises.firstIndex { $0.id == exercise.id } ?? 0
-                        
-                        Circle()
-                            .frame(width: 24, height: 24)
-                            .overlay {
-                                Text("\(index + 1)")
-                                    .font(.system(size: 16))
-                                    .foregroundStyle(.background)
-                            }
-                            .padding(.trailing)
-                        
-                        TextField("Enter title here…", text: exercise.title)
-                            .overlay(alignment: .trailing) {
-                                Button {
-                                } label: {
-                                    Image(systemName: "xmark.circle")
-                                        .foregroundStyle(.secondary)
-                                }
-                                .buttonStyle(.plain)
-                                .opacity(title.isEmpty ? 0 : 1)
-                            }
-                            .padding(.trailing, 30)
-                            .padding(.leading, 4)
-                            .padding(2)
-                            .background(.fill.quaternary, in: .rect(cornerRadius: 6))
-
-                    }
-                }
-            } header: {
-                Text("Exercises")
-            } footer: {
-                Button {
-                    exercises.append(Exercise(title: ""))
-                } label: {
-                    Text("add exercise")
-                        .font(.caption)
-                }
-            }
+            titleSection
+            exercisesSection
+            addButton
         }
-        .navigationTitle("Add Workout")
+        .navigationTitle("Create new Workout")
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
                 Button("Cancel") {
                     dismiss()
                 }
             }
-            ToolbarItem(placement: .confirmationAction) {
+            ToolbarItem(placement: .topBarTrailing) {
                 Button("Done") {
-                    addWorkout()
+                    let workout = Workout(title: title, exercises: exercises)
+
+                    for exercise in exercises {
+                        modelContext.insert(exercise)
+                    }
+                    
+                    modelContext.insert(workout)
+                    
+                    save()
                     dismiss()
                 }
-                .disabled(title.isEmpty)
+                .disabled(isDoneButtonDisabled())
+            }
+        }
+        .navigationDestination(isPresented: $showAddExercise) {
+            ExerciseSelectionView(selections: exercises) { selections in
+                exercises = selections
             }
         }
     }
     
-    private func addWorkout() {
-        withAnimation {
-            let newWorkout = Workout(title: title, exercises: [Exercise.previewExercise])
-            workoutManager.workouts.append(newWorkout)
+    private func isDoneButtonDisabled() -> Bool {
+        return title.isEmpty
+    }
+    
+    private func save() {
+        do {
+            try modelContext.save()
+        } catch {
+            print("Error saving the context.")
+        }
+    }
+}
+
+
+// MARK: - View Components
+extension AddWorkoutView {
+    @ViewBuilder
+    private var titleSection: some View {
+        Section(header: Text("Workout Title")) {
+            TextField("Enter title here…", text: $title)
+                .padding(.trailing, 30)
+                .overlay(alignment: .trailing) {
+                    Button {
+                        title = ""
+                    } label: {
+                        Image(systemName: "xmark.circle")
+                            .foregroundStyle(.secondary)
+                    }
+                    .buttonStyle(.plain)
+                    .opacity(title.isEmpty ? 0 : 1)
+                }
+        }
+    }
+    
+    @ViewBuilder
+    private var exercisesSection: some View {
+        ForEach(exercises) { exercise in
+            Section {
+                NavigationLink {
+                    Text(exercise.title)
+                } label: {
+                    VStack(alignment: .leading) {
+                        Text(exercise.title)
+                    }
+                }
+                
+                ForEach(exercise.sets) { exercise in
+                    Text("\(exercise.weight)")
+                }
+            } header: {
+                let index = exercises.firstIndex { $0.id == exercise.id } ?? 0
+                Text("Exercise \(index + 1)")
+            }
+        }
+    }
+    
+    @ViewBuilder
+    private var addButton: some View {
+        Button {
+            // TODO: Open a sheet to select from the exercises collection or create a new exercise
+            showAddExercise.toggle()
+        } label: {
+            HStack {
+                Image(systemName: "plus")
+                Text("Add Exercises")
+            }
         }
     }
 }
@@ -101,6 +125,5 @@ struct AddWorkoutView: View {
 #Preview {
     NavigationStack {
         AddWorkoutView()
-            .environmentObject(WorkoutManager.preview)
     }
 }
