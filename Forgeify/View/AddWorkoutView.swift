@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct AddWorkoutView: View {
-    @Environment(\.modelContext) var modelContext
-    @Environment(\.dismiss) var dismiss
+    @Environment(\.modelContext) private var modelContext
+    @Environment(\.dismiss) private var dismiss
     
     @State private var title: String = ""
     @State private var exercises: [WorkoutExercise] = []
@@ -18,32 +18,13 @@ struct AddWorkoutView: View {
     
     var body: some View {
         Form {
-            titleSection
-            exercisesSection
-            addButton
+            titleSection()
+            exercisesSection()
+            addButton()
         }
         .navigationTitle("Create new Workout")
         .toolbar {
-            ToolbarItem(placement: .cancellationAction) {
-                Button("Cancel") {
-                    dismiss()
-                }
-            }
-            ToolbarItem(placement: .topBarTrailing) {
-                Button("Done") {
-                    let workout = Workout(title: title, exercises: exercises)
-
-                    for exercise in exercises {
-                        modelContext.insert(exercise)
-                    }
-                    
-                    modelContext.insert(workout)
-                    
-                    save()
-                    dismiss()
-                }
-                .disabled(isDoneButtonDisabled())
-            }
+            toolbarItems()
         }
         .navigationDestination(isPresented: $showAddExercise) {
             ExerciseSelectionView(selections: exercises) { selections in
@@ -69,7 +50,7 @@ struct AddWorkoutView: View {
 // MARK: - View Components
 extension AddWorkoutView {
     @ViewBuilder
-    private var titleSection: some View {
+    private func titleSection() -> some View {
         Section(header: Text("Workout Title")) {
             TextField("Enter title here…", text: $title)
                 .padding(.trailing, 30)
@@ -87,7 +68,7 @@ extension AddWorkoutView {
     }
     
     @ViewBuilder
-    private var exercisesSection: some View {
+    private func exercisesSection() -> some View {
         ForEach(exercises) { exercise in
             Section {
                 NavigationLink {
@@ -109,15 +90,36 @@ extension AddWorkoutView {
     }
     
     @ViewBuilder
-    private var addButton: some View {
+    private func addButton() -> some View {
         Button {
             // TODO: Open a sheet to select from the exercises collection or create a new exercise
             showAddExercise.toggle()
         } label: {
-            HStack {
-                Image(systemName: "plus")
-                Text("Add Exercises")
+            Label("Add Exercises", systemImage: "plus")
+        }
+    }
+    
+    @ToolbarContentBuilder
+    private func toolbarItems() -> some ToolbarContent {
+        ToolbarItem(placement: .cancellationAction) {
+            Button("Cancel") {
+                dismiss()
             }
+        }
+        ToolbarItem(placement: .confirmationAction) {
+            Button("Done") {
+                let workout = Workout(title: title, exercises: exercises)
+
+                for exercise in exercises {
+                    modelContext.insert(exercise)
+                }
+                
+                modelContext.insert(workout)
+                
+                save()
+                dismiss()
+            }
+            .disabled(isDoneButtonDisabled())
         }
     }
 }

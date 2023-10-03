@@ -9,14 +9,14 @@ import SwiftUI
 import SwiftData
 
 struct ExerciseSelectionView: View {
-    @Environment(\.modelContext) var modelContext
-    @Environment(\.dismiss) var dismiss
-    @Query(sort: \WorkoutExercise.title) var exercises: [WorkoutExercise]
+    @Environment(\.modelContext) private var modelContext
+    @Environment(\.dismiss) private var dismiss
+    @Query(sort: \WorkoutExercise.title) private var exercises: [WorkoutExercise]
         
     @State private var selections: [WorkoutExercise]
     @State private var showAddExercise: Bool = false
     
-    var onAdd: (Array<WorkoutExercise>) -> Void
+    private let onAdd: (Array<WorkoutExercise>) -> Void
     
     init(selections: [WorkoutExercise], onAdd: @escaping (Array<WorkoutExercise>) -> Void) {
         self._selections = State(wrappedValue: selections)
@@ -42,34 +42,22 @@ struct ExerciseSelectionView: View {
         .overlay {
             if exercises.isEmpty {
                 ContentUnavailableView {
-                    Label("No Exercises in your collection.", systemImage: "figure.run.circle")
+                    Label("No Exercise in your collection.", systemImage: "figure.run.circle")
                 } description: {
-                    Text("New exercises you create will appear here.\nUse the '+' button to create a new exercise.")
+                    Text("New exercises you create will appear here.\nTap the button below to create a new exercise.")
                 } actions: {
                     Button {
                         showAddExercise.toggle()
                     } label: {
                         Text("Add Exercise")
+                            .padding(4)
                     }
-                    
+                    .buttonStyle(.borderedProminent)
                 }
             }
         }
         .toolbar {
-            ToolbarItem(placement: .status) {
-                Button {
-                    showAddExercise.toggle()
-                } label: {
-                    Label("Add exercise", systemImage: "plus")
-                }
-            }
-            
-            ToolbarItem(placement: .topBarTrailing) {
-                Button("Done") {
-                    onAdd(selections)
-                    dismiss()
-                }
-            }
+            toolbarItems()
         }
         .navigationDestination(isPresented: $showAddExercise) {
             AddExerciseView() { exercise in
@@ -81,12 +69,33 @@ struct ExerciseSelectionView: View {
     private func getItemCheckmark(for exercise: WorkoutExercise) -> String {
         return selections.contains(exercise) ? "checkmark.circle.fill" : "circle"
     }
+    
+    
  }
+
+// MARK: - Components
+extension ExerciseSelectionView {
+    @ToolbarContentBuilder
+    private func toolbarItems() -> some ToolbarContent {
+        ToolbarItem(placement: .automatic) {
+            Button {
+                showAddExercise.toggle()
+            } label: {
+                Label("Create new Exercise", systemImage: "plus")
+            }
+        }
+        
+        ToolbarItem(placement: .confirmationAction) {
+            Button("Done") {
+                onAdd(selections)
+                dismiss()
+            }
+        }
+    }
+}
 
 #Preview {
     NavigationStack {
-        ExerciseSelectionView(selections: []) { _ in
-            
-        }
+        ExerciseSelectionView(selections: []) { _ in }
     }
 }

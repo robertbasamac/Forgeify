@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-final class Workout: Identifiable {
+final class Workout {
     var id: UUID
     var title: String
     var exercises = [WorkoutExercise]()
@@ -26,18 +26,6 @@ final class Workout: Identifiable {
             .joined(separator: ", ")
         
         return exerciseTitles.isEmpty ? "Empty" : exerciseTitles
-    }
-}
-
-// MARK: - Hashable
-extension Workout: Hashable {
-    static func == (lhs: Workout, rhs: Workout) -> Bool {
-        lhs.title == rhs.title && lhs.exercises == rhs.exercises
-    }
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(title)
-        hasher.combine(exercises)
     }
 }
 

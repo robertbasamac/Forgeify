@@ -21,6 +21,7 @@ struct ExerciseSet: Identifiable, Codable {
     }
 }
 
+// MARK: - Hasable
 extension ExerciseSet: Hashable {
     static func == (lhs: ExerciseSet, rhs: ExerciseSet) -> Bool {
         lhs.weight == rhs.weight && lhs.reps == rhs.reps && lhs.rest == rhs.rest
@@ -33,6 +34,7 @@ extension ExerciseSet: Hashable {
     }
 }
 
+// MARK: - Preview data
 extension ExerciseSet {
     static var previewExercises: [ExerciseSet] {
         [

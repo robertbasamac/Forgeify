@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0905B4FC2AC599A20016D6F3 /* WorkoutExercise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0905B4FB2AC599A20016D6F3 /* WorkoutExercise.swift */; };
 		0905B4FE2AC604200016D6F3 /* ExerciseSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0905B4FD2AC604200016D6F3 /* ExerciseSet.swift */; };
+		0957C4432ACC8DB5008987EE /* AddSetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0957C4422ACC8DB5008987EE /* AddSetView.swift */; };
 		09CED6E62ACAD7DA0066AEE1 /* ExerciseSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09CED6E52ACAD7DA0066AEE1 /* ExerciseSelectionView.swift */; };
 		09CED6E82ACAF1D20066AEE1 /* AddExerciseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09CED6E72ACAF1D20066AEE1 /* AddExerciseView.swift */; };
 		09E28C762AC45A0100A18450 /* ForgeifyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09E28C752AC45A0100A18450 /* ForgeifyApp.swift */; };
@@ -24,6 +25,7 @@
 /* Begin PBXFileReference section */
 		0905B4FB2AC599A20016D6F3 /* WorkoutExercise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutExercise.swift; sourceTree = "<group>"; };
 		0905B4FD2AC604200016D6F3 /* ExerciseSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseSet.swift; sourceTree = "<group>"; };
+		0957C4422ACC8DB5008987EE /* AddSetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSetView.swift; sourceTree = "<group>"; };
 		09CED6E52ACAD7DA0066AEE1 /* ExerciseSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseSelectionView.swift; sourceTree = "<group>"; };
 		09CED6E72ACAF1D20066AEE1 /* AddExerciseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExerciseView.swift; sourceTree = "<group>"; };
 		09E28C722AC45A0100A18450 /* Forgeify.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Forgeify.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -103,6 +105,7 @@
 				09E28C8F2AC4D37F00A18450 /* AddWorkoutView.swift */,
 				09CED6E52ACAD7DA0066AEE1 /* ExerciseSelectionView.swift */,
 				09CED6E72ACAF1D20066AEE1 /* AddExerciseView.swift */,
+				0957C4422ACC8DB5008987EE /* AddSetView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -199,6 +202,7 @@
 				09E28C782AC45A0100A18450 /* ContentView.swift in Sources */,
 				09E28C8E2AC4D20400A18450 /* WorkoutManager.swift in Sources */,
 				09E28C762AC45A0100A18450 /* ForgeifyApp.swift in Sources */,
+				0957C4432ACC8DB5008987EE /* AddSetView.swift in Sources */,
 				09E28C902AC4D37F00A18450 /* AddWorkoutView.swift in Sources */,
 				0905B4FC2AC599A20016D6F3 /* WorkoutExercise.swift in Sources */,
 				09CED6E82ACAF1D20066AEE1 /* AddExerciseView.swift in Sources */,

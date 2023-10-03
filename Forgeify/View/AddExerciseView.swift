@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct AddExerciseView: View {
-    @Environment(\.modelContext) var modelContext
-    @Environment(\.dismiss) var dismiss
+    @Environment(\.modelContext) private var modelContext
+    @Environment(\.dismiss) private var dismiss
     
     @State private var title: String = ""
     @State private var sets: [ExerciseSet] = []
@@ -26,71 +26,24 @@ struct AddExerciseView: View {
         }
         .navigationTitle("Create new Exercise")
         .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button("Done") {
-                    let exercise = WorkoutExercise(title: title, sets: sets)
-                    modelContext.insert(exercise)
-                    
-                    do {
-                        try modelContext.save()
-                    } catch {
-                        print("Error saving context.")
-                    }
-                    
-                    onAdd(exercise)
-                    dismiss()
-                }
-            }
+            toolbarItems()
         }
         .sheet(isPresented: $showAddSet) {
             NavigationStack {
                 AddSetView(sets: $sets)
             }
-            .presentationDetents([.medium])
+            .presentationDetents([.fraction(0.45)])
+            .presentationCornerRadius(20)
+            .interactiveDismissDisabled()
         }
+    }
+    
+    private func isDoneButtonDisabled() -> Bool {
+        return title.isEmpty
     }
 }
 
-struct AddSetView: View {
-    @Environment(\.modelContext) var modelContext
-    @Environment(\.dismiss) var dismiss
-    
-    @State private var weight: Int = 0
-    @State private var reps: Int = 0
-    @State private var rest: Int = 0
-    
-    @Binding var sets: [ExerciseSet]
-        
-    var body: some View {
-        Form {
-            Section {
-                TextField("Weight", value: $weight, formatter: NumberFormatter())
-                    .keyboardType(.numberPad)
-            }
-            Section {
-                
-                TextField("Weight", value: $reps, formatter: NumberFormatter())
-                    .keyboardType(.numberPad)
-            }
-            
-            Section {
-                TextField("Weight", value: $rest, formatter: NumberFormatter())
-                    .keyboardType(.numberPad)
-            }
-        }
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button("Done") {
-                    let set = ExerciseSet(weight: weight, reps: reps, rest: rest)
-                    sets.append(set)
-                    dismiss()
-                }
-            }
-        }
-    }
-}
-
-// MARK: - View Components
+// MARK: - Components
 extension AddExerciseView {
     @ViewBuilder
     private var titleSection: some View {
@@ -131,8 +84,30 @@ extension AddExerciseView {
             Label("Add Set", systemImage: "plus")
         }
     }
+    
+    @ToolbarContentBuilder
+    private func toolbarItems() -> some ToolbarContent {
+        ToolbarItem(placement: .confirmationAction) {
+            Button("Done") {
+                let exercise = WorkoutExercise(title: title, sets: sets)
+                modelContext.insert(exercise)
+                
+                do {
+                    try modelContext.save()
+                } catch {
+                    print("Error saving context.")
+                }
+                
+                onAdd(exercise)
+                dismiss()
+            }
+            .disabled(isDoneButtonDisabled())
+        }
+    }
 }
 
 #Preview {
-    AddExerciseView() { _ in }
+    NavigationStack {
+        AddExerciseView() { _ in }        
+    }
 }

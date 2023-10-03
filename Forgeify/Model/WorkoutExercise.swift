@@ -9,8 +9,8 @@ import Foundation
 import SwiftData
 
 @Model
-final class WorkoutExercise: Identifiable {
-    @Attribute(.unique) var id: UUID
+final class WorkoutExercise {
+    var id: UUID
     var title: String
     var sets: [ExerciseSet]
     
@@ -18,18 +18,6 @@ final class WorkoutExercise: Identifiable {
         self.id = id
         self.title = title
         self.sets = sets
-    }
-}
-
-// MARK: - Hashable
-extension WorkoutExercise: Hashable {
-    static func == (lhs: WorkoutExercise, rhs: WorkoutExercise) -> Bool {
-        lhs.title == rhs.title && lhs.sets == rhs.sets
-    }
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(title)
-        hasher.combine(sets)
     }
 }
 

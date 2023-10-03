@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct WorkoutItem: View {
-    var workout: Workout
-    private var exerciseTitles: String = ""
+    private var workout: Workout
+    private var exerciseTitles: String
     
     init(workout: Workout) {
         self.workout = workout
@@ -34,7 +34,7 @@ struct WorkoutItem: View {
 #Preview {
     NavigationStack {
         List {
-            WorkoutItem(workout: Workout(title: "Push-ups", exercises: []))
+            WorkoutItem(workout: Workout.previewWorkout)
         }
     }
 }
