@@ -77,11 +77,11 @@ struct ExerciseSelectionView: View {
 extension ExerciseSelectionView {
     @ToolbarContentBuilder
     private func toolbarItems() -> some ToolbarContent {
-        ToolbarItem(placement: .automatic) {
+        ToolbarItem(placement: .principal) {
             Button {
                 showAddExercise.toggle()
             } label: {
-                Label("Create new Exercise", systemImage: "plus")
+                Label("Create new Exercise", systemImage: "plus.circle.fill")
             }
         }
         
