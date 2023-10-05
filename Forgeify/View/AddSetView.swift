@@ -58,17 +58,18 @@ struct AddSetView: View {
 extension AddSetView {
     @ToolbarContentBuilder
     private func toolbarItems() -> some ToolbarContent {
-        ToolbarItem(placement: .bottomBar) {
+        ToolbarItem(placement: .confirmationAction) {
             Button {
                 let set = ExerciseSet(weight: weight, reps: reps, rest: rest)
                 sets.append(set)
                 dismiss()
             } label: {
                 Text("Done")
-                    .frame(maxWidth: .infinity)
+                //TODO: add again the code once the sheet 'Done' button is fixed
+//                    .frame(maxWidth: .infinity)
             }
-            .padding(.horizontal)
-            .buttonStyle(.borderedProminent)
+//            .padding(.horizontal)
+//            .buttonStyle(.borderedProminent)
         }
     }
     

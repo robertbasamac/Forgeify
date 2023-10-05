@@ -41,6 +41,12 @@ struct AddExerciseView: View {
     private func isDoneButtonDisabled() -> Bool {
         return title.isEmpty
     }
+    
+    private func deleteSets(at offsets: IndexSet) {
+        withAnimation {
+            sets.remove(atOffsets: offsets)
+        }
+    }
 }
 
 // MARK: - Components
@@ -73,6 +79,7 @@ extension AddExerciseView {
                     Text("Rest: \(set.rest)")
                 }
             }
+            .onDelete(perform: deleteSets)
         }
     }
     

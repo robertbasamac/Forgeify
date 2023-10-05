@@ -37,6 +37,12 @@ struct AddWorkoutView: View {
         return title.isEmpty
     }
     
+    private func deleteExercises(at offsets: IndexSet) {
+        withAnimation {
+            exercises.remove(atOffsets: offsets)
+        }
+    }
+    
     private func save() {
         do {
             try modelContext.save()
@@ -74,19 +80,19 @@ extension AddWorkoutView {
                 NavigationLink {
                     Text(exercise.title)
                 } label: {
-                    VStack(alignment: .leading) {
-                        Text(exercise.title)
-                    }
+                    Text(exercise.title)
                 }
                 
                 ForEach(exercise.sets) { exercise in
                     Text("\(exercise.weight)")
                 }
+                .deleteDisabled(true)
             } header: {
                 let index = exercises.firstIndex { $0.id == exercise.id } ?? 0
                 Text("Exercise \(index + 1)")
             }
         }
+        .onDelete(perform: deleteExercises)
     }
     
     @ViewBuilder
