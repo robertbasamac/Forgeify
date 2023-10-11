@@ -13,14 +13,14 @@ struct ExerciseSelectionView: View {
     @Environment(\.dismiss) private var dismiss
     @Query(sort: \WorkoutExercise.title) private var exercises: [WorkoutExercise]
     
-    @State private var selections: [WorkoutExercise]
+    @Binding private var selections: [WorkoutExercise]
     @State private var showAddExercise: Bool = false
     
-    private let onAdd: (Array<WorkoutExercise>) -> Void
+//    private let onAdd: (Array<WorkoutExercise>) -> Void
     
-    init(selections: [WorkoutExercise], onAdd: @escaping (Array<WorkoutExercise>) -> Void) {
-        self._selections = State(wrappedValue: selections)
-        self.onAdd = onAdd
+    init(selections: Binding<[WorkoutExercise]>/*, onAdd: @escaping (Array<WorkoutExercise>) -> Void*/) {
+        self._selections = Binding(projectedValue: selections)
+//        self.onAdd = onAdd
     }
     
     var body: some View {
@@ -109,25 +109,25 @@ extension ExerciseSelectionView {
     
     @ToolbarContentBuilder
     private func toolbarItems() -> some ToolbarContent {
-        ToolbarItem(placement: .principal) {
+        ToolbarItem(placement: .topBarTrailing) {
             Button {
                 showAddExercise.toggle()
             } label: {
-                Label("Create new Exercise", systemImage: "plus.circle.fill")
+                Label("Create new Exercise", systemImage: "plus")
             }
         }
-        
-        ToolbarItem(placement: .confirmationAction) {
-            Button("Done") {
-                onAdd(selections)
-                dismiss()
-            }
-        }
+// 
+//        ToolbarItem(placement: .confirmationAction) {
+//            Button("Done") {
+//                onAdd(selections)
+//                dismiss()
+//            }
+//        }
     }
 }
 
 #Preview {
     NavigationStack {
-        ExerciseSelectionView(selections: []) { _ in }
+        ExerciseSelectionView(selections: .constant([])) /*{ _ in }*/
     }
 }

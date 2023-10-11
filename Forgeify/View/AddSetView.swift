@@ -33,7 +33,6 @@ struct AddSetView: View {
                     TextField("Reps", value: $reps, formatter: NumberFormatter())
                 }
             }
-            
             Section {
                 HStack {
                     Text("Rest")
@@ -65,17 +64,21 @@ extension AddSetView {
                 dismiss()
             } label: {
                 Text("Done")
-                //TODO: add again the code once the sheet 'Done' button is fixed
-//                    .frame(maxWidth: .infinity)
             }
-//            .padding(.horizontal)
-//            .buttonStyle(.borderedProminent)
+        }
+        
+        ToolbarItem(placement: .cancellationAction) {
+            Button {
+                dismiss()
+            } label: {
+                Text("Dimiss")
+            }
         }
     }
     
     @ToolbarContentBuilder
     private func keyboardToolbarItems() -> some ToolbarContent {
-        ToolbarItemGroup(placement: .keyboard) {
+        ToolbarItem(placement: .keyboard) {
             HStack {
                 Spacer()
                 Button("Done") {

@@ -13,7 +13,6 @@ struct AddWorkoutView: View {
     
     @State private var title: String = ""
     @State private var exercises: [WorkoutExercise] = []
-    
     @State private var showAddExercise: Bool = false
     
     var body: some View {
@@ -26,20 +25,29 @@ struct AddWorkoutView: View {
         .toolbar {
             toolbarItems()
         }
+        .navigationDestination(for: WorkoutExercise.self) { exercise in
+            ExerciseDetailView(exercise: exercise)
+        }
         .navigationDestination(isPresented: $showAddExercise) {
-            ExerciseSelectionView(selections: exercises) { selections in
+            ExerciseSelectionView(selections: $exercises) /*{ selections in
                 exercises = selections
-            }
+            }*/
         }
     }
     
-    private func isDoneButtonDisabled() -> Bool {
+    private func isSaveButtonDisabled() -> Bool {
         return title.isEmpty
     }
     
-    private func deleteExercises(at offsets: IndexSet) {
+    private func delete(at offsets: IndexSet) {
         withAnimation {
             exercises.remove(atOffsets: offsets)
+        }
+    }
+    
+    private func move(fromOffsets source: IndexSet, toOffsets destination: Int) {
+        withAnimation {
+            exercises.move(fromOffsets: source, toOffset: destination)
         }
     }
     
@@ -75,30 +83,22 @@ extension AddWorkoutView {
     
     @ViewBuilder
     private func exercisesSection() -> some View {
-        ForEach(exercises) { exercise in
+        if !exercises.isEmpty {
             Section {
-                NavigationLink {
-                    Text(exercise.title)
-                } label: {
-                    Text(exercise.title)
+                ForEach(exercises) { exercise in
+                    ExerciseItem(exercise: exercise)
                 }
-                
-                ForEach(exercise.sets) { exercise in
-                    Text("\(exercise.weight)")
-                }
-                .deleteDisabled(true)
+                .onDelete(perform: delete)
+                .onMove(perform: move)
             } header: {
-                let index = exercises.firstIndex { $0.id == exercise.id } ?? 0
-                Text("Exercise \(index + 1)")
+                Text("Exercises")
             }
         }
-        .onDelete(perform: deleteExercises)
     }
     
     @ViewBuilder
     private func addButton() -> some View {
         Button {
-            // TODO: Open a sheet to select from the exercises collection or create a new exercise
             showAddExercise.toggle()
         } label: {
             Label("Add Exercises", systemImage: "plus")
@@ -112,20 +112,27 @@ extension AddWorkoutView {
                 dismiss()
             }
         }
-        ToolbarItem(placement: .confirmationAction) {
-            Button("Done") {
+        
+        ToolbarItemGroup(placement: .topBarTrailing) {
+            EditButton()
+            
+            Button("Save") {
                 let workout = Workout(title: title, exercises: exercises)
-
-                for exercise in exercises {
-                    modelContext.insert(exercise)
-                }
+//                for exercise in exercises {
+//                    modelContext.insert(exercise)
+//                }
                 
                 modelContext.insert(workout)
                 
-                save()
+                do {
+                    try modelContext.save()
+                } catch {
+                    print("Error saving the context.")
+                }
+                
                 dismiss()
             }
-            .disabled(isDoneButtonDisabled())
+            .disabled(isSaveButtonDisabled())
         }
     }
 }

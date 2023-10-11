@@ -10,9 +10,10 @@ import SwiftData
 
 @Model
 final class WorkoutExercise {
-    var id: UUID
+    @Attribute(.unique) var id: UUID
     var title: String
     var sets: [ExerciseSet]
+    var workouts: [Workout] = [Workout]()
     
     init(id: UUID = .init(), title: String = "", sets: [ExerciseSet] = []) {
         self.id = id

@@ -10,7 +10,7 @@ import SwiftData
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query private var workouts: [Workout]
+    @Query(sort: \Workout.title, order: .forward) private var workouts: [Workout]
     
     @State private var showAddWorkout = false
     
@@ -18,7 +18,9 @@ struct ContentView: View {
         NavigationStack {
             List {
                 ForEach(workouts) { workout in
-                    WorkoutItem(workout: workout)
+                    Section {
+                        WorkoutItem(workout: workout)
+                    }
                 }
                 .onDelete(perform: deleteWorkouts)
             }
@@ -31,7 +33,7 @@ struct ContentView: View {
                 toolbarItems()
             }
             .navigationDestination(for: Workout.self) { workout in
-                Text(workout.title)
+                WorkoutDetailView(workout: workout)
             }
             .fullScreenCover(isPresented: $showAddWorkout) {
                 NavigationStack {
@@ -88,6 +90,7 @@ extension ContentView {
             EditButton()
                 .disabled(workouts.isEmpty)
         }
+        
         ToolbarItem(placement: .topBarTrailing) {
             Button {
                 showAddWorkout = true

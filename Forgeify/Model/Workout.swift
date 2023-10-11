@@ -10,9 +10,11 @@ import SwiftData
 
 @Model
 final class Workout {
-    var id: UUID
+    @Attribute(.unique) var id: UUID
     var title: String
-    var exercises = [WorkoutExercise]()
+    
+    @Relationship(deleteRule: .nullify, inverse: \WorkoutExercise.workouts)
+    var exercises: [WorkoutExercise] = [WorkoutExercise]()
     
     init(id: UUID = .init(), title: String = "", exercises: [WorkoutExercise] = []) {
         self.id = id
@@ -22,10 +24,10 @@ final class Workout {
     
     public func subtitle() -> String {
         let exerciseTitles = self.exercises
-            .map { $0.title.lowercased() }
+            .compactMap { $0.title.lowercased() }
             .joined(separator: ", ")
         
-        return exerciseTitles.isEmpty ? "Empty" : exerciseTitles
+        return exercises.isEmpty ? "No exercises" : exerciseTitles
     }
 }
 

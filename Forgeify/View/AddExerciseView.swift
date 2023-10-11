@@ -13,9 +13,8 @@ struct AddExerciseView: View {
     
     @State private var title: String = ""
     @State private var sets: [ExerciseSet] = []
-    
     @State private var showAddSet: Bool = false
-    
+        
     var onAdd: (WorkoutExercise) -> Void
 
     var body: some View {
@@ -38,13 +37,19 @@ struct AddExerciseView: View {
         }
     }
     
-    private func isDoneButtonDisabled() -> Bool {
+    private func isSaveButtonDisabled() -> Bool {
         return title.isEmpty
     }
     
-    private func deleteSets(at offsets: IndexSet) {
+    private func delete(at offsets: IndexSet) {
         withAnimation {
             sets.remove(atOffsets: offsets)
+        }
+    }
+    
+    private func move(fromOffsets source: IndexSet, toOffset destination: Int) {
+        withAnimation {
+            sets.move(fromOffsets: source, toOffset: destination)
         }
     }
 }
@@ -71,15 +76,20 @@ extension AddExerciseView {
     
     @ViewBuilder
     private var setsSection: some View {
-        Section {
-            ForEach(sets) { set in
-                HStack {
-                    Text("Weight: \(set.weight)")
-                    Text("Reps: \(set.reps)")
-                    Text("Rest: \(set.rest)")
+        if !sets.isEmpty {
+            Section {
+                ForEach(sets) { set in
+                    HStack {
+                        Text("Weight: \(set.weight)")
+                        Text("Reps: \(set.reps)")
+                        Text("Rest: \(set.rest)")
+                    }
                 }
+                .onDelete(perform: delete)
+                .onMove(perform: move)
+            }  header: {
+                Text("Sets")
             }
-            .onDelete(perform: deleteSets)
         }
     }
     
@@ -94,8 +104,10 @@ extension AddExerciseView {
     
     @ToolbarContentBuilder
     private func toolbarItems() -> some ToolbarContent {
-        ToolbarItem(placement: .confirmationAction) {
-            Button("Done") {
+        ToolbarItemGroup(placement: .topBarTrailing) {
+            EditButton()
+            
+            Button("Save") {
                 let exercise = WorkoutExercise(title: title, sets: sets)
                 modelContext.insert(exercise)
                 
@@ -108,7 +120,7 @@ extension AddExerciseView {
                 onAdd(exercise)
                 dismiss()
             }
-            .disabled(isDoneButtonDisabled())
+            .disabled(isSaveButtonDisabled())
         }
     }
 }

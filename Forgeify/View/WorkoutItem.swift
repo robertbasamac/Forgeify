@@ -9,22 +9,21 @@ import SwiftUI
 
 struct WorkoutItem: View {
     private var workout: Workout
-    private var exerciseTitles: String
     
     init(workout: Workout) {
         self.workout = workout
-        self.exerciseTitles = self.workout.subtitle()
     }
     
     var body: some View {
         NavigationLink(value: workout) {
             VStack(alignment: .leading) {
                 Text(workout.title)
-                    .font(.headline)
+                    .font(.title3.bold())
                 Divider()
-                Text(exerciseTitles)
+                Text(workout.subtitle())
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
+                    .lineLimit(1)
                     .italic()
             }
         }
