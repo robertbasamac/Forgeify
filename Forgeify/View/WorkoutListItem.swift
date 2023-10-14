@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct WorkoutItem: View {
+struct WorkoutListItem: View {
     private var workout: Workout
     
     init(workout: Workout) {
@@ -20,7 +20,7 @@ struct WorkoutItem: View {
                 Text(workout.title)
                     .font(.title3.bold())
                 Divider()
-                Text(workout.subtitle())
+                Text(workout.subtitle)
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
                     .lineLimit(1)
@@ -31,9 +31,11 @@ struct WorkoutItem: View {
 }
 
 #Preview {
-    NavigationStack {
-        List {
-            WorkoutItem(workout: Workout.previewWorkout)
+    ModelContainerPreview(PreviewSampleData.inMemoryContainer) {
+        NavigationStack {
+            List {
+                WorkoutListItem(workout: .previewWorkout)
+            }
         }
     }
 }

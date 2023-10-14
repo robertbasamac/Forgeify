@@ -86,7 +86,7 @@ extension AddWorkoutView {
         if !exercises.isEmpty {
             Section {
                 ForEach(exercises) { exercise in
-                    ExerciseItem(exercise: exercise)
+                    ExerciseListItem(exercise: exercise)
                 }
                 .onDelete(perform: delete)
                 .onMove(perform: move)
@@ -138,7 +138,9 @@ extension AddWorkoutView {
 }
 
 #Preview {
-    NavigationStack {
-        AddWorkoutView()
+    ModelContainerPreview(PreviewSampleData.inMemoryContainer) {
+        NavigationStack {
+            AddWorkoutView()
+        }
     }
 }

@@ -8,7 +8,7 @@
 import SwiftUI
 import SwiftData
 
-struct ExerciseItem: View {
+struct ExerciseListItem: View {
     private var exercise: WorkoutExercise
     
     private let columns = [GridItem(.fixed(14), spacing: 0), GridItem(.flexible(), spacing: 0), GridItem(.flexible(), spacing: 0), GridItem(.flexible(), spacing: 0)]
@@ -67,5 +67,11 @@ struct ExerciseItem: View {
 }
 
 #Preview {
-    ExerciseItem(exercise: WorkoutExercise.previewExercise)
+    ModelContainerPreview(PreviewSampleData.inMemoryContainer) {
+        NavigationStack {
+            List {
+                ExerciseListItem(exercise: .previewExercise)
+            }
+        }
+    }
 }

@@ -19,7 +19,7 @@ struct ContentView: View {
             List {
                 ForEach(workouts) { workout in
                     Section {
-                        WorkoutItem(workout: workout)
+                        WorkoutListItem(workout: workout)
                     }
                 }
                 .onDelete(perform: deleteWorkouts)
@@ -103,4 +103,5 @@ extension ContentView {
 
 #Preview {
     ContentView()
+        .modelContainer(PreviewSampleData.container)
 }

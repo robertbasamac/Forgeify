@@ -126,7 +126,9 @@ extension AddExerciseView {
 }
 
 #Preview {
-    NavigationStack {
-        AddExerciseView() { _ in }        
+    ModelContainerPreview(PreviewSampleData.inMemoryContainer) {
+        NavigationStack {
+            AddExerciseView() { _ in }
+        }
     }
 }

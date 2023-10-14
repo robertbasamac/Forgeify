@@ -92,7 +92,10 @@ extension AddSetView {
 }
 
 #Preview {
-    NavigationStack {
-        AddSetView(sets: .constant(ExerciseSet.previewExercises))
+    ModelContainerPreview(PreviewSampleData.emptyInMemoryContainer) {
+        @State var exerciseSets: [ExerciseSet] = []
+        NavigationStack {
+            AddSetView(sets: $exerciseSets)
+        }
     }
 }

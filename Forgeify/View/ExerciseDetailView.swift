@@ -24,5 +24,7 @@ struct ExerciseDetailView: View {
 }
 
 #Preview {
-    ExerciseDetailView(exercise: WorkoutExercise.previewExercise)
+    ModelContainerPreview(PreviewSampleData.inMemoryContainer) {
+        ExerciseDetailView(exercise: .previewExercise)
+    }
 }

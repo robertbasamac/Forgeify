@@ -127,7 +127,17 @@ extension ExerciseSelectionView {
 }
 
 #Preview {
-    NavigationStack {
-        ExerciseSelectionView(selections: .constant([])) /*{ _ in }*/
+    ModelContainerPreview(PreviewSampleData.inMemoryContainer) {
+        NavigationStack {
+            ExerciseSelectionView(selections: .constant([])) /*{ _ in }*/
+        }
+    }
+}
+
+#Preview {
+    ModelContainerPreview(PreviewSampleData.emptyInMemoryContainer) {
+        NavigationStack {
+            ExerciseSelectionView(selections: .constant([])) /*{ _ in }*/
+        }
     }
 }

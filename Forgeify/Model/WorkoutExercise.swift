@@ -24,6 +24,15 @@ final class WorkoutExercise {
 
 // MARK: - Preview data
 extension WorkoutExercise {
+    static var previewExercise: WorkoutExercise {
+        WorkoutExercise(title: "Overhead Shoulder press",
+                 sets: [
+                    ExerciseSet(weight: 10, reps: 12, rest: 60),
+                    ExerciseSet(weight: 15, reps: 10, rest: 60),
+                    ExerciseSet(weight: 20, reps: 8, rest: 60)
+                 ])
+    }
+    
     static var previewExercises: [WorkoutExercise] {
         [
             WorkoutExercise(title: "Bench press",
@@ -45,14 +54,5 @@ extension WorkoutExercise {
                         ExerciseSet(weight: 20, reps: 8, rest: 60)
                      ])
         ]
-    }
-    
-    static var previewExercise: WorkoutExercise {
-        WorkoutExercise(title: "Bench press",
-                 sets: [
-                    ExerciseSet(weight: 10, reps: 12, rest: 60),
-                    ExerciseSet(weight: 15, reps: 10, rest: 60),
-                    ExerciseSet(weight: 20, reps: 8, rest: 60)
-                 ])
     }
 }

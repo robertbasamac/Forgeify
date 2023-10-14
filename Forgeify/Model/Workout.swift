@@ -21,8 +21,11 @@ final class Workout {
         self.title = title
         self.exercises = exercises
     }
-    
-    public func subtitle() -> String {
+}
+
+extension Workout {
+    @Transient
+    var subtitle: String {
         let exerciseTitles = self.exercises
             .compactMap { $0.title.lowercased() }
             .joined(separator: ", ")
@@ -33,6 +36,30 @@ final class Workout {
 
 // MARK: - Preview data
 extension Workout {
+    static var previewWorkout: Workout {
+        Workout(title: "Legs day",
+                exercises: [
+                    WorkoutExercise(title: "Squats",
+                             sets: [
+                                ExerciseSet(weight: 10, reps: 12, rest: 60),
+                                ExerciseSet(weight: 15, reps: 10, rest: 60),
+                                ExerciseSet(weight: 20, reps: 8, rest: 60)
+                             ]),
+                    WorkoutExercise(title: "Front Squats",
+                             sets: [
+                                ExerciseSet(weight: 10, reps: 12, rest: 60),
+                                ExerciseSet(weight: 15, reps: 10, rest: 60),
+                                ExerciseSet(weight: 20, reps: 8, rest: 60)
+                             ]),
+                    WorkoutExercise(title: "Single Leg Bulgarian Split Squat",
+                             sets: [
+                                ExerciseSet(weight: 10, reps: 12, rest: 60),
+                                ExerciseSet(weight: 15, reps: 10, rest: 60),
+                                ExerciseSet(weight: 20, reps: 8, rest: 60)
+                             ])
+                ])
+    }
+    
     static var previewWorkouts: [Workout] {
         [
             Workout(title: "Push day",
@@ -99,29 +126,5 @@ extension Workout {
                                  ])
                     ])
         ]
-    }
-    
-    static var previewWorkout: Workout {
-        Workout(title: "Legs day",
-                exercises: [
-                    WorkoutExercise(title: "Squats",
-                             sets: [
-                                ExerciseSet(weight: 10, reps: 12, rest: 60),
-                                ExerciseSet(weight: 15, reps: 10, rest: 60),
-                                ExerciseSet(weight: 20, reps: 8, rest: 60)
-                             ]),
-                    WorkoutExercise(title: "Front Squats",
-                             sets: [
-                                ExerciseSet(weight: 10, reps: 12, rest: 60),
-                                ExerciseSet(weight: 15, reps: 10, rest: 60),
-                                ExerciseSet(weight: 20, reps: 8, rest: 60)
-                             ]),
-                    WorkoutExercise(title: "Single Leg Bulgarian Split Squat",
-                             sets: [
-                                ExerciseSet(weight: 10, reps: 12, rest: 60),
-                                ExerciseSet(weight: 15, reps: 10, rest: 60),
-                                ExerciseSet(weight: 20, reps: 8, rest: 60)
-                             ])
-                ])
     }
 }

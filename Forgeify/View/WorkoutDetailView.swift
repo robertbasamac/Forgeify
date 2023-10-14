@@ -41,5 +41,7 @@ struct WorkoutDetailView: View {
 }
 
 #Preview {
-    WorkoutDetailView(workout: Workout.previewWorkout)
+    ModelContainerPreview(PreviewSampleData.inMemoryContainer) {
+        WorkoutDetailView(workout: .previewWorkout)
+    }
 }
