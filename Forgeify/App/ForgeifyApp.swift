@@ -15,6 +15,6 @@ struct ForgeifyApp: App {
         WindowGroup {
             ContentView()
         }
-        .modelContainer(for: [Workout.self, WorkoutExercise.self], isAutosaveEnabled: false, isUndoEnabled: true)
+        .modelContainer(for: [Workout.self, WorkoutExercise.self], isAutosaveEnabled: false)
     }
 }

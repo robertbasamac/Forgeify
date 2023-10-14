@@ -15,12 +15,9 @@ struct ExerciseSelectionView: View {
     
     @Binding private var selections: [WorkoutExercise]
     @State private var showAddExercise: Bool = false
-    
-//    private let onAdd: (Array<WorkoutExercise>) -> Void
-    
-    init(selections: Binding<[WorkoutExercise]>/*, onAdd: @escaping (Array<WorkoutExercise>) -> Void*/) {
+        
+    init(selections: Binding<[WorkoutExercise]>) {
         self._selections = Binding(projectedValue: selections)
-//        self.onAdd = onAdd
     }
     
     var body: some View {
@@ -116,16 +113,11 @@ extension ExerciseSelectionView {
                 Label("Create new Exercise", systemImage: "plus")
             }
         }
-// 
-//        ToolbarItem(placement: .confirmationAction) {
-//            Button("Done") {
-//                onAdd(selections)
-//                dismiss()
-//            }
-//        }
     }
 }
 
+
+// MARK: - Previews
 #Preview {
     ModelContainerPreview(PreviewSampleData.inMemoryContainer) {
         NavigationStack {

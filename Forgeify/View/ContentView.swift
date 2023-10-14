@@ -43,6 +43,10 @@ struct ContentView: View {
         }
     }
     
+}
+
+// MARK: - Helper Methods
+extension ContentView {
     private func deleteWorkouts(at offsets: IndexSet) {
         withAnimation {
             offsets.map { workouts[$0] }.forEach(deleteWorkout)
@@ -101,6 +105,7 @@ extension ContentView {
     }
 }
 
+// MARK: - Preview
 #Preview {
     ContentView()
         .modelContainer(PreviewSampleData.container)

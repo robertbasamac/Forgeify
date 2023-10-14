@@ -29,12 +29,13 @@ struct AddWorkoutView: View {
             ExerciseDetailView(exercise: exercise)
         }
         .navigationDestination(isPresented: $showAddExercise) {
-            ExerciseSelectionView(selections: $exercises) /*{ selections in
-                exercises = selections
-            }*/
+            ExerciseSelectionView(selections: $exercises)
         }
     }
-    
+}
+
+// MARK: - Helper Methods
+extension AddWorkoutView {
     private func isSaveButtonDisabled() -> Bool {
         return title.isEmpty
     }
@@ -118,9 +119,6 @@ extension AddWorkoutView {
             
             Button("Save") {
                 let workout = Workout(title: title, exercises: exercises)
-//                for exercise in exercises {
-//                    modelContext.insert(exercise)
-//                }
                 
                 modelContext.insert(workout)
                 
@@ -137,6 +135,7 @@ extension AddWorkoutView {
     }
 }
 
+// MARK: - Preview
 #Preview {
     ModelContainerPreview(PreviewSampleData.inMemoryContainer) {
         NavigationStack {

@@ -30,6 +30,7 @@ struct WorkoutListItem: View {
     }
 }
 
+// MARK: - Preview
 #Preview {
     ModelContainerPreview(PreviewSampleData.inMemoryContainer) {
         NavigationStack {

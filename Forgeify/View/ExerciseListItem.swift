@@ -23,7 +23,7 @@ struct ExerciseListItem: View {
                 Text(exercise.title)
                     .font(.headline)
                 Divider()
-                LazyVGrid(columns: columns, spacing: 8) {                    
+                LazyVGrid(columns: columns, spacing: 8) {
                     ForEach(indexedExerciseSets(for: exercise), id: \.1.id) { (index, exerciseSet) in
                         Text("\(index):")
                             .font(.caption)
@@ -31,11 +31,11 @@ struct ExerciseListItem: View {
                         Text("\(exerciseSet.weight)")
                             .frame(maxWidth: .infinity)
                             .overlay {
-                            if index == 1 {
-                                Text("Weight").font(.caption).foregroundStyle(.secondary)
-                                    .offset(y: -20)
+                                if index == 1 {
+                                    Text("Weight").font(.caption).foregroundStyle(.secondary)
+                                        .offset(y: -20)
+                                }
                             }
-                        }
                         Text("\(exerciseSet.reps)")
                             .frame(maxWidth: .infinity)
                             .overlay {
@@ -60,12 +60,16 @@ struct ExerciseListItem: View {
             }
         }
     }
-    
+}
+ 
+// MARK: - Helper Methods
+extension ExerciseListItem {
     private func indexedExerciseSets(for exercise: WorkoutExercise) -> [(Int, ExerciseSet)] {
         exercise.sets.enumerated().map { ($0 + 1, $1) }
     }
 }
 
+// MARK: - Preview
 #Preview {
     ModelContainerPreview(PreviewSampleData.inMemoryContainer) {
         NavigationStack {

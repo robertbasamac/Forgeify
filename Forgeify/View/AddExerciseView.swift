@@ -14,9 +14,9 @@ struct AddExerciseView: View {
     @State private var title: String = ""
     @State private var sets: [ExerciseSet] = []
     @State private var showAddSet: Bool = false
-        
+    
     var onAdd: (WorkoutExercise) -> Void
-
+    
     var body: some View {
         Form {
             titleSection
@@ -36,7 +36,10 @@ struct AddExerciseView: View {
             .interactiveDismissDisabled()
         }
     }
-    
+}
+
+// MARK: - Helper Methods
+extension AddExerciseView {
     private func isSaveButtonDisabled() -> Bool {
         return title.isEmpty
     }
@@ -125,6 +128,7 @@ extension AddExerciseView {
     }
 }
 
+// MARK: - Preview
 #Preview {
     ModelContainerPreview(PreviewSampleData.inMemoryContainer) {
         NavigationStack {
