@@ -120,6 +120,9 @@ extension AddWorkoutView {
             Button("Save") {
                 let workout = Workout(title: title, exercises: exercises)
                 
+                for exercise in self.exercises {
+                    modelContext.insert(exercise)
+                }
                 modelContext.insert(workout)
                 
                 do {

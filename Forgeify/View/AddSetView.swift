@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct AddSetView: View {
-    @Environment(\.modelContext) var modelContext
     @Environment(\.dismiss) var dismiss
     
     @State private var weight: Int = 0
@@ -94,9 +93,8 @@ extension AddSetView {
 // MARK: - Preview
 #Preview {
     ModelContainerPreview(PreviewSampleData.emptyInMemoryContainer) {
-        @State var exerciseSets: [ExerciseSet] = []
         NavigationStack {
-            AddSetView(sets: $exerciseSets)
+            AddSetView(sets: .constant([]))
         }
     }
 }

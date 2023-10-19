@@ -13,12 +13,6 @@ struct ExerciseDetailView: View {
     var body: some View {
         List {
             Text(exercise.title)
-            
-            Section {
-                ForEach(exercise.workouts) { workout in
-                    Text(workout.title)
-                }
-            }
         }
     }
 }
@@ -26,6 +20,6 @@ struct ExerciseDetailView: View {
 // MARK: - Preview
 #Preview {
     ModelContainerPreview(PreviewSampleData.inMemoryContainer) {
-        ExerciseDetailView(exercise: .previewExercise)
+        ExerciseDetailView(exercise: WorkoutExercise.previewExercise)
     }
 }

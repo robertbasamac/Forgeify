@@ -11,7 +11,8 @@ import SwiftData
 struct ExerciseSelectionView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
-    @Query(sort: \WorkoutExercise.title) private var exercises: [WorkoutExercise]
+    
+    @Query(sort: \Exercise.title) private var exercises: [Exercise]
     
     @Binding private var selections: [WorkoutExercise]
     @State private var showAddExercise: Bool = false
@@ -43,21 +44,25 @@ struct ExerciseSelectionView: View {
         }
         .navigationDestination(isPresented: $showAddExercise) {
             AddExerciseView() { exercise in
-                selections.append(exercise)
+                let workoutExercise = WorkoutExercise(exercise: exercise)
+                exercise.exercises.append(workoutExercise)
+                
+                selections.append(workoutExercise)
             }
         }
     }
     
-    private func handleSelection(of exercise: WorkoutExercise) {
+    private func handleSelection(of exercise: Exercise) {
         if selections.contains(where: { $0.id == exercise.id }) {
-            selections.removeAll { $0.id == exercise.id }
+            selections.removeAll { $0.exercise == exercise }
         } else {
-            selections.append(exercise)
+            let workoutExercise = WorkoutExercise(exercise: exercise)
+            selections.append(workoutExercise)
         }
     }
     
-    private func getItemCheckmark(for exercise: WorkoutExercise) -> String {
-        return selections.contains(exercise) ? "checkmark.circle.fill" : "circle"
+    private func getItemCheckmark(for exercise: Exercise) -> String {
+        return selections.contains(where: { $0.exercise == exercise }) ? "checkmark.circle.fill" : "circle"
     }
     
     private func deleteExercises(at offsets: IndexSet) {
@@ -69,7 +74,7 @@ struct ExerciseSelectionView: View {
         }
     }
     
-    private func deleteExercise(_ exercise: WorkoutExercise) {
+    private func deleteExercise(_ exercise: Exercise) {
         modelContext.delete(exercise)
         save()
     }
@@ -117,19 +122,19 @@ extension ExerciseSelectionView {
 }
 
 
-// MARK: - Previews
-#Preview {
+// MARK: - Preview
+#Preview("Filled") {
     ModelContainerPreview(PreviewSampleData.inMemoryContainer) {
         NavigationStack {
-            ExerciseSelectionView(selections: .constant([])) /*{ _ in }*/
+            ExerciseSelectionView(selections: .constant([]))
         }
     }
 }
 
-#Preview {
+#Preview("Empty") {
     ModelContainerPreview(PreviewSampleData.emptyInMemoryContainer) {
         NavigationStack {
-            ExerciseSelectionView(selections: .constant([])) /*{ _ in }*/
+            ExerciseSelectionView(selections: .constant([]))
         }
     }
 }

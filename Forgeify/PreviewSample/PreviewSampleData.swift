@@ -14,24 +14,40 @@ actor PreviewSampleData {
     static var container: ModelContainer = {
         return try! inMemoryContainer()
     }()
+    
+    @MainActor
+    static var emptyContainer: ModelContainer = {
+        return try! emptyInMemoryContainer()
+    }()
 
     static var inMemoryContainer: () throws -> ModelContainer = {
-        let schema = Schema([Workout.self, WorkoutExercise.self])
+        let schema = Schema([Workout.self, Exercise.self])
         let configuration = ModelConfiguration(isStoredInMemoryOnly: true)
         let container = try! ModelContainer(for: schema, configurations: [configuration])
-        let sampleData: [any PersistentModel] = [
-            Workout.previewWorkout, WorkoutExercise.previewExercise
-        ]
+        
+        var sampleData: [any PersistentModel] {
+            var samples: [any PersistentModel] = []
+            
+            samples.append(contentsOf: Workout.previewWorkouts)
+            samples.append(WorkoutExercise.previewExercise)
+            samples.append(contentsOf: WorkoutExercise.previewExercises)
+            samples.append(Exercise.previewExercise)
+            samples.append(contentsOf: Exercise.previewExercises)
+            
+            return samples
+        }
+        
         Task { @MainActor in
             sampleData.forEach {
                 container.mainContext.insert($0)
             }
         }
+        
         return container
     }
     
     static var emptyInMemoryContainer: () throws -> ModelContainer = {
-        let schema = Schema([Workout.self, WorkoutExercise.self])
+        let schema = Schema([Workout.self, Exercise.self])
         let configuration = ModelConfiguration(isStoredInMemoryOnly: true)
         let container = try! ModelContainer(for: schema, configurations: [configuration])
         

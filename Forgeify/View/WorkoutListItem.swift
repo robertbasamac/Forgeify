@@ -6,8 +6,11 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct WorkoutListItem: View {
+    @Environment(\.modelContext) private var modelContext
+    
     private var workout: Workout
     
     init(workout: Workout) {
@@ -35,7 +38,7 @@ struct WorkoutListItem: View {
     ModelContainerPreview(PreviewSampleData.inMemoryContainer) {
         NavigationStack {
             List {
-                WorkoutListItem(workout: .previewWorkout)
+                WorkoutListItem(workout: Workout.previewWorkout)
             }
         }
     }

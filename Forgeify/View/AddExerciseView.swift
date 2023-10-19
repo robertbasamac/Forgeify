@@ -15,7 +15,7 @@ struct AddExerciseView: View {
     @State private var sets: [ExerciseSet] = []
     @State private var showAddSet: Bool = false
     
-    var onAdd: (WorkoutExercise) -> Void
+    var onAdd: (Exercise) -> Void
     
     var body: some View {
         Form {
@@ -111,7 +111,7 @@ extension AddExerciseView {
             EditButton()
             
             Button("Save") {
-                let exercise = WorkoutExercise(title: title, sets: sets)
+                let exercise = Exercise(title: title)
                 modelContext.insert(exercise)
                 
                 do {
