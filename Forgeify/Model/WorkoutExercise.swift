@@ -1,8 +1,8 @@
 //
-//  Exercise.swift
+//  WorkoutExercise.swift
 //  Forgeify
 //
-//  Created by Robert Basamac on 28.09.2023.
+//  Created by Robert Basamac on 17.10.2023.
 //
 
 import Foundation
@@ -10,49 +10,41 @@ import SwiftData
 
 @Model
 final class WorkoutExercise {
-    @Attribute(.unique) var id: UUID
-    var title: String
-    var sets: [ExerciseSet]
-    var workouts: [Workout] = [Workout]()
+    var id: UUID
+    var exercise: Exercise?
+    var sets: [ExerciseSet] = [ExerciseSet]()
+    var workout: Workout?
     
-    init(id: UUID = .init(), title: String = "", sets: [ExerciseSet] = []) {
+    init(id: UUID = .init(), exercise: Exercise, sets: [ExerciseSet] = []) {
         self.id = id
-        self.title = title
+        self.exercise = exercise
         self.sets = sets
+    }
+}
+
+extension WorkoutExercise {
+    @Transient
+    var title: String {
+        exercise?.title ?? "Empty"
     }
 }
 
 // MARK: - Preview data
 extension WorkoutExercise {
     static var previewExercise: WorkoutExercise {
-        WorkoutExercise(title: "Overhead Shoulder press",
-                 sets: [
-                    ExerciseSet(weight: 10, reps: 12, rest: 60),
-                    ExerciseSet(weight: 15, reps: 10, rest: 60),
-                    ExerciseSet(weight: 20, reps: 8, rest: 60)
-                 ])
+        WorkoutExercise(exercise: Exercise.previewExercise,
+                        sets: ExerciseSet.previewSets)
     }
     
     static var previewExercises: [WorkoutExercise] {
-        [
-            WorkoutExercise(title: "Bench press",
-                     sets: [
-                        ExerciseSet(weight: 10, reps: 12, rest: 60),
-                        ExerciseSet(weight: 15, reps: 10, rest: 60),
-                        ExerciseSet(weight: 20, reps: 8, rest: 60),
-                     ]),
-            WorkoutExercise(title: "Overhead Shoulder press",
-                     sets: [
-                        ExerciseSet(weight: 10, reps: 12, rest: 60),
-                        ExerciseSet(weight: 15, reps: 10, rest: 60),
-                        ExerciseSet(weight: 20, reps: 8, rest: 60)
-                     ]),
-            WorkoutExercise(title: "Push-ups",
-                     sets: [
-                        ExerciseSet(weight: 10, reps: 12, rest: 60),
-                        ExerciseSet(weight: 15, reps: 10, rest: 60),
-                        ExerciseSet(weight: 20, reps: 8, rest: 60)
-                     ])
-        ]
+        var exercises: [WorkoutExercise] = []
+        
+        for exercise in Exercise.previewExercises {
+            let exerciseToAdd = WorkoutExercise(exercise: exercise,
+                                                sets: ExerciseSet.previewSets)
+            exercises.append(exerciseToAdd)
+        }
+        
+        return exercises
     }
 }

@@ -6,12 +6,12 @@
 //
 
 import SwiftUI
-
+import SwiftData
 struct WorkoutDetailView: View {
     @Environment(\.modelContext) private var modelContext
     
     private var workout: Workout
-
+    
     init(workout: Workout) {
         self.workout = workout
     }
@@ -43,6 +43,6 @@ struct WorkoutDetailView: View {
 // MARK: - Preview
 #Preview {
     ModelContainerPreview(PreviewSampleData.inMemoryContainer) {
-        WorkoutDetailView(workout: .previewWorkout)
+        WorkoutDetailView(workout: Workout.previewWorkout)
     }
 }
