@@ -20,6 +20,6 @@ struct ExerciseDetailView: View {
 // MARK: - Preview
 #Preview {
     ModelContainerPreview(PreviewSampleData.inMemoryContainer) {
-        ExerciseDetailView(exercise: .previewExercise)
+        ExerciseDetailView(exercise: WorkoutExercise.previewExercise)
     }
 }

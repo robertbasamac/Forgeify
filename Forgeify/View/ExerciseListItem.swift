@@ -74,7 +74,7 @@ extension ExerciseListItem {
     ModelContainerPreview(PreviewSampleData.inMemoryContainer) {
         NavigationStack {
             List {
-                ExerciseListItem(exercise: .previewExercise)
+                ExerciseListItem(exercise: WorkoutExercise.previewExercise)
             }
         }
     }

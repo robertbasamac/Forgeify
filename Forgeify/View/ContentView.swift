@@ -106,7 +106,12 @@ extension ContentView {
 }
 
 // MARK: - Preview
-#Preview {
+#Preview("Filled") {
     ContentView()
         .modelContainer(PreviewSampleData.container)
+}
+
+#Preview("Empty") {
+    ContentView()
+        .modelContainer(PreviewSampleData.emptyContainer)
 }

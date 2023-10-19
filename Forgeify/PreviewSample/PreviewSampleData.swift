@@ -14,6 +14,11 @@ actor PreviewSampleData {
     static var container: ModelContainer = {
         return try! inMemoryContainer()
     }()
+    
+    @MainActor
+    static var emptyContainer: ModelContainer = {
+        return try! emptyInMemoryContainer()
+    }()
 
     static var inMemoryContainer: () throws -> ModelContainer = {
         let schema = Schema([Workout.self, Exercise.self])

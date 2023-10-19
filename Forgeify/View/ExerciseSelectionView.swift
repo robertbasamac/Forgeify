@@ -11,6 +11,7 @@ import SwiftData
 struct ExerciseSelectionView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
+    
     @Query(sort: \Exercise.title) private var exercises: [Exercise]
     
     @Binding private var selections: [WorkoutExercise]
@@ -121,8 +122,8 @@ extension ExerciseSelectionView {
 }
 
 
-// MARK: - Previews
-#Preview {
+// MARK: - Preview
+#Preview("Filled") {
     ModelContainerPreview(PreviewSampleData.inMemoryContainer) {
         NavigationStack {
             ExerciseSelectionView(selections: .constant([]))
@@ -130,7 +131,7 @@ extension ExerciseSelectionView {
     }
 }
 
-#Preview {
+#Preview("Empty") {
     ModelContainerPreview(PreviewSampleData.emptyInMemoryContainer) {
         NavigationStack {
             ExerciseSelectionView(selections: .constant([]))

@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+
 struct WorkoutDetailView: View {
     @Environment(\.modelContext) private var modelContext
     
@@ -43,6 +44,8 @@ struct WorkoutDetailView: View {
 // MARK: - Preview
 #Preview {
     ModelContainerPreview(PreviewSampleData.inMemoryContainer) {
-        WorkoutDetailView(workout: Workout.previewWorkout)
+        NavigationStack {
+            WorkoutDetailView(workout: Workout.previewWorkout)
+        }
     }
 }
