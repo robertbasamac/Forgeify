@@ -26,6 +26,7 @@ struct ContentView: View {
             }
             .navigationTitle("Workouts")
             .scrollDisabled(workouts.isEmpty)
+            .listSectionSpacing(.compact)
             .overlay {
                 emptyWorkoutsView()
             }
@@ -42,7 +43,6 @@ struct ContentView: View {
             }
         }
     }
-    
 }
 
 // MARK: - Helper Methods

@@ -26,7 +26,7 @@ struct AddWorkoutView: View {
             toolbarItems()
         }
         .navigationDestination(for: WorkoutExercise.self) { exercise in
-            ExerciseDetailView(exercise: exercise)
+            EditWorkoutExerciseView(exercise: exercise)
         }
         .navigationDestination(isPresented: $showAddExercise) {
             ExerciseSelectionView(selections: $exercises)

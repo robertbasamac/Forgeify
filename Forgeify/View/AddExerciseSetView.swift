@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct AddSetView: View {
+struct AddExerciseSetView: View {
     @Environment(\.dismiss) var dismiss
     
     @State private var weight: Int = 0
@@ -53,7 +53,7 @@ struct AddSetView: View {
 }
 
 // MARK: - Components
-extension AddSetView {
+extension AddExerciseSetView {
     @ToolbarContentBuilder
     private func toolbarItems() -> some ToolbarContent {
         ToolbarItem(placement: .confirmationAction) {
@@ -92,9 +92,9 @@ extension AddSetView {
 
 // MARK: - Preview
 #Preview {
-    ModelContainerPreview(PreviewSampleData.emptyInMemoryContainer) {
+    ModelContainerPreview(PreviewSampleData.inMemoryContainer) {
         NavigationStack {
-            AddSetView(sets: .constant([]))
+            AddExerciseSetView(sets: .constant([]))
         }
     }
 }

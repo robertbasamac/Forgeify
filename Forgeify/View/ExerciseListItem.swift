@@ -22,41 +22,43 @@ struct ExerciseListItem: View {
             VStack(alignment: .leading) {
                 Text(exercise.title)
                     .font(.headline)
-                Divider()
-                LazyVGrid(columns: columns, spacing: 8) {
-                    ForEach(indexedExerciseSets(for: exercise), id: \.1.id) { (index, exerciseSet) in
-                        Text("\(index):")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                        Text("\(exerciseSet.weight)")
-                            .frame(maxWidth: .infinity)
-                            .overlay {
-                                if index == 1 {
-                                    Text("Weight").font(.caption).foregroundStyle(.secondary)
-                                        .offset(y: -20)
+                if !exercise.sets.isEmpty {
+                    Divider()
+                    LazyVGrid(columns: columns, spacing: 8) {
+                        ForEach(indexedExerciseSets(for: exercise), id: \.1.id) { (index, exerciseSet) in
+                            Text("\(index):")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                            Text("\(exerciseSet.weight)")
+                                .frame(maxWidth: .infinity)
+                                .overlay {
+                                    if index == 1 {
+                                        Text("Weight").font(.caption).foregroundStyle(.secondary)
+                                            .offset(y: -20)
+                                    }
                                 }
-                            }
-                        Text("\(exerciseSet.reps)")
-                            .frame(maxWidth: .infinity)
-                            .overlay {
-                                if index == 1 {
-                                    Text("Reps").font(.caption).foregroundStyle(.secondary)
-                                        .offset(y: -20)
+                            Text("\(exerciseSet.reps)")
+                                .frame(maxWidth: .infinity)
+                                .overlay {
+                                    if index == 1 {
+                                        Text("Reps").font(.caption).foregroundStyle(.secondary)
+                                            .offset(y: -20)
+                                    }
                                 }
-                            }
-                        Text("\(exerciseSet.rest)")
-                            .frame(maxWidth: .infinity)
-                            .overlay {
-                                
-                                if index == 1 {
-                                    Text("Rest").font(.caption).foregroundStyle(.secondary)
-                                        .offset(y: -20)
+                            Text("\(exerciseSet.rest)")
+                                .frame(maxWidth: .infinity)
+                                .overlay {
+                                    
+                                    if index == 1 {
+                                        Text("Rest").font(.caption).foregroundStyle(.secondary)
+                                            .offset(y: -20)
+                                    }
                                 }
-                            }
+                        }
+                        .font(.subheadline)
                     }
-                    .font(.subheadline)
+                    .padding(.top, 16)
                 }
-                .padding(.top, 16)
             }
         }
     }

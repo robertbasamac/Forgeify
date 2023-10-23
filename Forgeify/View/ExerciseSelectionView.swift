@@ -16,7 +16,7 @@ struct ExerciseSelectionView: View {
     
     @Binding private var selections: [WorkoutExercise]
     @State private var showAddExercise: Bool = false
-        
+    
     init(selections: Binding<[WorkoutExercise]>) {
         self._selections = Binding(projectedValue: selections)
     }
@@ -51,9 +51,12 @@ struct ExerciseSelectionView: View {
             }
         }
     }
-    
+}
+
+// MARK: - Helper methods
+extension ExerciseSelectionView {
     private func handleSelection(of exercise: Exercise) {
-        if selections.contains(where: { $0.id == exercise.id }) {
+        if selections.contains(where: { $0.exercise == exercise }) {
             selections.removeAll { $0.exercise == exercise }
         } else {
             let workoutExercise = WorkoutExercise(exercise: exercise)

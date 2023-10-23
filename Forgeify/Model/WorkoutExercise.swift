@@ -12,8 +12,8 @@ import SwiftData
 final class WorkoutExercise {
     var id: UUID
     var exercise: Exercise?
-    var sets: [ExerciseSet] = [ExerciseSet]()
     var workout: Workout?
+    var sets: [ExerciseSet] = [ExerciseSet]()
     
     init(id: UUID = .init(), exercise: Exercise, sets: [ExerciseSet] = []) {
         self.id = id
