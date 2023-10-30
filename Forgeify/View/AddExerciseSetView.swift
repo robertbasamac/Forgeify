@@ -1,5 +1,5 @@
 //
-//  AddSetView.swift
+//  AddExerciseSetView.swift
 //  Forgeify
 //
 //  Created by Robert Basamac on 03.10.2023.

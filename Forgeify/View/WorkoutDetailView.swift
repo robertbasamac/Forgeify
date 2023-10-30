@@ -1,5 +1,5 @@
 //
-//  DetailedWorkoutView.swift
+//  WorkoutDetailView.swift
 //  Forgeify
 //
 //  Created by Robert Basamac on 12.10.2023.

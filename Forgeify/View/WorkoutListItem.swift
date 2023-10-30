@@ -1,5 +1,5 @@
 //
-//  WorkoutItem.swift
+//  WorkoutListItem.swift
 //  Forgeify
 //
 //  Created by Robert Basamac on 27.09.2023.

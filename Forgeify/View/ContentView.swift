@@ -2,110 +2,51 @@
 //  ContentView.swift
 //  Forgeify
 //
-//  Created by Robert Basamac on 27.09.2023.
+//  Created by Robert Basamac on 27.10.2023.
 //
 
 import SwiftUI
-import SwiftData
 
 struct ContentView: View {
-    @Environment(\.modelContext) private var modelContext
-    @Query(sort: \Workout.title, order: .forward) private var workouts: [Workout]
+    @State private var tabSelection: Tab = .workouts
     
-    @State private var showAddWorkout = false
+    enum Tab: String, Identifiable {
+        var id: Self { self }
+        
+        case workouts = "Workouts"
+        case exercises = "Exercises"
+        
+        var systemImageName: String {
+            switch self {
+            case .workouts:
+                return "figure.run.square.stack"
+            case .exercises:
+                return "figure"
+            }
+        }
+    }
     
     var body: some View {
-        NavigationStack {
-            List {
-                ForEach(workouts) { workout in
-                    Section {
-                        WorkoutListItem(workout: workout)
-                    }
-                }
-                .onDelete(perform: deleteWorkouts)
+        TabView(selection: $tabSelection) {
+            NavigationStack {
+                WorkoutsTab()
             }
-            .navigationTitle("Workouts")
-            .scrollDisabled(workouts.isEmpty)
-            .listSectionSpacing(.compact)
-            .overlay {
-                emptyWorkoutsView()
+            .tabItem {
+                Label(Tab.workouts.rawValue, systemImage: Tab.workouts.systemImageName)
             }
-            .toolbar {
-                toolbarItems()
+            .tag(Tab.workouts)
+            
+            NavigationStack {
+                ExercisesTab()
             }
-            .navigationDestination(for: Workout.self) { workout in
-                WorkoutDetailView(workout: workout)
+            .tabItem {
+                Label(Tab.exercises.rawValue, systemImage: Tab.exercises.systemImageName)
             }
-            .fullScreenCover(isPresented: $showAddWorkout) {
-                NavigationStack {
-                    AddWorkoutView()
-                }
-            }
+            .tag(Tab.exercises)
         }
     }
 }
 
-// MARK: - Helper Methods
-extension ContentView {
-    private func deleteWorkouts(at offsets: IndexSet) {
-        withAnimation {
-            offsets.map { workouts[$0] }.forEach(deleteWorkout)
-        }
-    }
-    
-    private func deleteWorkout(_ workout: Workout) {
-        modelContext.delete(workout)
-        save()
-    }
-    
-    private func save() {
-        do {
-            try modelContext.save()
-        } catch {
-            print("Error saving context.")
-        }
-    }
-}
-
-// MARK: - Components
-extension ContentView {
-    @ViewBuilder
-    private func emptyWorkoutsView() -> some View {
-        if workouts.isEmpty {
-            ContentUnavailableView {
-                Label("No Workouts", systemImage: "figure.run.circle")
-            } description: {
-                Text("New workouts you create will appear here.\nTap the botton below to create a new workout.")
-            } actions: {
-                Button {
-                    showAddWorkout.toggle()
-                } label: {
-                    Text("Add Workout")
-                        .padding(4)
-                }
-                .buttonStyle(.borderedProminent)
-            }
-        }
-    }
-    
-    @ToolbarContentBuilder
-    private func toolbarItems() -> some ToolbarContent {
-        ToolbarItem(placement: .topBarLeading) {
-            EditButton()
-                .disabled(workouts.isEmpty)
-        }
-        
-        ToolbarItem(placement: .topBarTrailing) {
-            Button {
-                showAddWorkout = true
-            } label: {
-                Label("Add Workout", systemImage: "plus")
-            }
-        }
-    }
-}
-
-// MARK: - Preview
 #Preview("Filled") {
     ContentView()
         .modelContainer(PreviewSampleData.container)
