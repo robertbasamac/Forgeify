@@ -24,21 +24,22 @@ struct WorkoutsTab: View {
             .onDelete(perform: deleteWorkouts)
         }
         .navigationTitle("Workouts")
-        .scrollDisabled(workouts.isEmpty)
         .listSectionSpacing(.compact)
+        .scrollDisabled(workouts.isEmpty)
+        .background(Color(uiColor: .systemGroupedBackground)) // to avoid the color glitch when opening the keyboard
         .overlay {
             emptyWorkoutsView()
         }
         .toolbar {
             toolbarItems()
         }
-        .navigationDestination(for: Workout.self) { workout in
-            WorkoutDetailView(workout: workout)
+        .sheet(isPresented: $showAddWorkout) {
+            AddWorkoutView()
+                .presentationDragIndicator(.visible)
+                .presentationCornerRadius(25)
+                .presentationBackground(Color(uiColor: .systemGroupedBackground)) // to avoid the color glitch when opening the keyboard
         }
-        .fullScreenCover(isPresented: $showAddWorkout) {
-            NavigationStack {
-                AddWorkoutView()
-            }
+        .onAppear {
         }
     }
 }
@@ -52,7 +53,13 @@ extension WorkoutsTab {
     }
     
     private func deleteWorkout(_ workout: Workout) {
-        modelContext.delete(workout)
+        withAnimation {
+            modelContext.delete(workout)
+            
+            for exercise in workout.exercises {
+                modelContext.delete(exercise)
+            }
+        }
         save()
     }
     
@@ -83,6 +90,7 @@ extension WorkoutsTab {
                 }
                 .buttonStyle(.borderedProminent)
             }
+            .background(Color(uiColor: .systemGroupedBackground))
         }
     }
     

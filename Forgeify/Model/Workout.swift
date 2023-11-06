@@ -13,10 +13,10 @@ final class Workout {
     @Attribute(.unique) var id: UUID
     @Attribute(.unique) var title: String
     
-    @Relationship(deleteRule: .cascade, inverse: \WorkoutExercise.workout)
-    var exercises: [WorkoutExercise] = [WorkoutExercise]()
+    @Relationship(deleteRule: .cascade, inverse: \ExerciseSet.workout)
+    var exercises: [ExerciseSet] = [ExerciseSet]()
     
-    init(id: UUID = .init(), title: String = "", exercises: [WorkoutExercise] = []) {
+    init(id: UUID = .init(), title: String, exercises: [ExerciseSet] = []) {
         self.id = id
         self.title = title
         self.exercises = exercises
@@ -26,11 +26,10 @@ final class Workout {
 extension Workout {
     @Transient
     var subtitle: String {
-        let exerciseTitles = self.exercises
-            .compactMap { $0.title.lowercased() }
-            .joined(separator: ", ")
+        let uniqueExerciseTitles = Set(self.exercises.compactMap { $0.exercise?.title.lowercased() })
+        let exerciseTitles = uniqueExerciseTitles.joined(separator: ", ")
         
-        return exercises.isEmpty ? "No exercises" : exerciseTitles
+        return exercises.isEmpty ? "No exercises" : (exerciseTitles.isEmpty ? "Empty" : exerciseTitles)
     }
 }
 
@@ -38,15 +37,15 @@ extension Workout {
 extension Workout {
     static var previewWorkout: Workout {
         Workout(title: "Legs day",
-                exercises: [WorkoutExercise.previewExercise])
+                exercises: [ExerciseSet.previewSet])
     }
     
     static var previewWorkouts: [Workout] {
         [
             Workout(title: "Legs day",
-                    exercises: [WorkoutExercise.previewExercise]),
+                    exercises: [ExerciseSet.previewSet]),
             Workout(title: "Push day",
-                    exercises: WorkoutExercise.previewExercises)
+                    exercises: ExerciseSet.previewSets)
         ]
     }
 }

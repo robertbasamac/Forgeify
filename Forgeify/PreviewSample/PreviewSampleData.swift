@@ -21,7 +21,7 @@ actor PreviewSampleData {
     }()
 
     static var inMemoryContainer: () throws -> ModelContainer = {
-        let schema = Schema([Workout.self, Exercise.self])
+        let schema = Schema([Exercise.self, Workout.self, ExerciseSet.self])
         let configuration = ModelConfiguration(isStoredInMemoryOnly: true)
         let container = try! ModelContainer(for: schema, configurations: [configuration])
         
@@ -29,10 +29,6 @@ actor PreviewSampleData {
             var samples: [any PersistentModel] = []
             
             samples.append(contentsOf: Workout.previewWorkouts)
-            samples.append(WorkoutExercise.previewExercise)
-            samples.append(contentsOf: WorkoutExercise.previewExercises)
-            samples.append(Exercise.previewExercise)
-            samples.append(contentsOf: Exercise.previewExercises)
             
             return samples
         }
@@ -47,7 +43,7 @@ actor PreviewSampleData {
     }
     
     static var emptyInMemoryContainer: () throws -> ModelContainer = {
-        let schema = Schema([Workout.self, Exercise.self])
+        let schema = Schema([Exercise.self, Workout.self, ExerciseSet.self])
         let configuration = ModelConfiguration(isStoredInMemoryOnly: true)
         let container = try! ModelContainer(for: schema, configurations: [configuration])
         

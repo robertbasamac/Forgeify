@@ -14,11 +14,12 @@ struct ExerciseSelectionView: View {
     
     @Query(sort: \Exercise.title) private var exercises: [Exercise]
     
-    @Binding private var selections: [WorkoutExercise]
+    @Binding private var exerciseSetInfo: [Exercise: [ExerciseSet]]
+
     @State private var showAddExercise: Bool = false
     
-    init(selections: Binding<[WorkoutExercise]>) {
-        self._selections = Binding(projectedValue: selections)
+    init(exerciseSetInfo: Binding<[Exercise: [ExerciseSet]]>) {
+        self._exerciseSetInfo = Binding(projectedValue: exerciseSetInfo)
     }
     
     var body: some View {
@@ -28,11 +29,12 @@ struct ExerciseSelectionView: View {
                     Image(systemName: getItemCheckmark(for: exercise))
                     Text(exercise.title)
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .contentShape(.rect)
                 .onTapGesture {
                     handleSelection(of: exercise)
                 }
             }
-            .onDelete(perform: deleteExercises)
         }
         .navigationTitle("Add Exercises")
         .scrollDisabled(exercises.isEmpty)
@@ -43,12 +45,7 @@ struct ExerciseSelectionView: View {
             toolbarItems()
         }
         .navigationDestination(isPresented: $showAddExercise) {
-            AddExerciseView() { exercise in
-                let workoutExercise = WorkoutExercise(exercise: exercise)
-                exercise.exercises.append(workoutExercise)
-                
-                selections.append(workoutExercise)
-            }
+            AddExerciseView()
         }
     }
 }
@@ -56,38 +53,20 @@ struct ExerciseSelectionView: View {
 // MARK: - Helper methods
 extension ExerciseSelectionView {
     private func handleSelection(of exercise: Exercise) {
-        if selections.contains(where: { $0.exercise == exercise }) {
-            selections.removeAll { $0.exercise == exercise }
+        if exerciseSetInfo[exercise] != nil {
+            exerciseSetInfo.removeValue(forKey: exercise)
         } else {
-            let workoutExercise = WorkoutExercise(exercise: exercise)
-            selections.append(workoutExercise)
+            exerciseSetInfo[exercise] = [ExerciseSet]()
+            
+            let exerciseSet = ExerciseSet()
+            exerciseSet.exercise = exercise
+            
+            exerciseSetInfo[exercise]?.append(exerciseSet)
         }
     }
     
     private func getItemCheckmark(for exercise: Exercise) -> String {
-        return selections.contains(where: { $0.exercise == exercise }) ? "checkmark.circle.fill" : "circle"
-    }
-    
-    private func deleteExercises(at offsets: IndexSet) {
-        withAnimation {
-            offsets.map { exercises[$0] }.forEach { exercise in
-                selections.removeAll { $0.id == exercise.id }
-                deleteExercise(exercise)
-            }
-        }
-    }
-    
-    private func deleteExercise(_ exercise: Exercise) {
-        modelContext.delete(exercise)
-        save()
-    }
-    
-    private func save() {
-        do {
-            try modelContext.save()
-        } catch {
-            print("Error saving context.")
-        }
+        return exerciseSetInfo[exercise] != nil ? "checkmark.circle.fill" : "circle"
     }
  }
 
@@ -109,6 +88,7 @@ extension ExerciseSelectionView {
                 }
                 .buttonStyle(.borderedProminent)
             }
+            .background(Color(uiColor: .systemGroupedBackground))
         }
     }
     
@@ -129,7 +109,7 @@ extension ExerciseSelectionView {
 #Preview("Filled") {
     ModelContainerPreview(PreviewSampleData.inMemoryContainer) {
         NavigationStack {
-            ExerciseSelectionView(selections: .constant([]))
+            ExerciseSelectionView( exerciseSetInfo: .constant([:]))
         }
     }
 }
@@ -137,7 +117,7 @@ extension ExerciseSelectionView {
 #Preview("Empty") {
     ModelContainerPreview(PreviewSampleData.emptyInMemoryContainer) {
         NavigationStack {
-            ExerciseSelectionView(selections: .constant([]))
+            ExerciseSelectionView(exerciseSetInfo: .constant([:]))
         }
     }
 }

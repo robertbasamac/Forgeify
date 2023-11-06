@@ -1,17 +1,17 @@
 //
-//  ExercisesTab.swift.swift
+//  ExerciseSetTab.swift.swift
 //  Forgeify
 //
-//  Created by Robert Basamac on 27.10.2023.
+//  Created by Robert Basamac on 02.11.2023.
 //
 
 import SwiftUI
 import SwiftData
 
-struct ExercisesTab: View {
+struct ExerciseSetTab: View {
     @Environment(\.modelContext) private var modelContext
     
-    @Query(sort: \Exercise.title, order: .forward) private var exercises: [Exercise]
+    @Query private var exercises: [ExerciseSet]
     
     @State private var showAddExercise: Bool = false
     
@@ -19,17 +19,12 @@ struct ExercisesTab: View {
         List {
             ForEach(exercises) { exercise in
                 Section {
-                    NavigationLink {
-                        EditExerciseView(exercise: exercise)
-                    } label: {
-                        Text(exercise.title)
-                    }
-
+                    Text(exercise.exercise?.title ?? "Empty")
                 }
             }
             .onDelete(perform: deleteExercises)
         }
-        .navigationTitle("Exercises")
+        .navigationTitle("Exercises Sets")
         .listSectionSpacing(.compact)
         .scrollDisabled(exercises.isEmpty)
         .background(Color(uiColor: .systemGroupedBackground)) // to avoid the color glitch when opening the keyboard
@@ -52,23 +47,17 @@ struct ExercisesTab: View {
 }
 
 // MARK: - Helper Methods
-extension ExercisesTab {
+extension ExerciseSetTab {
     private func deleteExercises(at offsets: IndexSet) {
         withAnimation {
             offsets.map { exercises[$0] }.forEach(deleteExercise)
         }
     }
     
-    private func deleteExercise(_ exercise: Exercise) {
-        withAnimation {
-            modelContext.delete(exercise)
-            
-            for exerciseSet in exercise.exerciseSets {
-                modelContext.delete(exerciseSet)
-            }
-            
-        }
-        save()
+    private func deleteExercise(_ exercise: ExerciseSet) {
+        modelContext.delete(exercise)
+        
+//        save()
     }
     
     private func save() {
@@ -82,13 +71,13 @@ extension ExercisesTab {
 
 
 // MARK: - Components
-extension ExercisesTab {
+extension ExerciseSetTab {
     @ViewBuilder
     private func emptyExerciseView() -> some View {
         if exercises.isEmpty {
             ContentUnavailableView {
                 Label("No Exercises in your collection.", systemImage: "figure.run.circle")
-            } description: { 
+            } description: {
                 Text("New exercises you create will appear here.\nTap the button below to create a new exercise.")
             } actions: {
                 Button {
@@ -123,14 +112,14 @@ extension ExercisesTab {
 // MARK: - Preview
 #Preview("Filled") {
     NavigationStack {
-        ExercisesTab()
+        ExerciseSetTab()
             .modelContainer(PreviewSampleData.container)
     }
 }
 
 #Preview("Empty") {
     NavigationStack {
-        ExercisesTab()
+        ExerciseSetTab()
             .modelContainer(PreviewSampleData.emptyContainer)
     }
 }

@@ -15,12 +15,15 @@ struct ContentView: View {
         
         case workouts = "Workouts"
         case exercises = "Exercises"
+        case sets = "Sets"
         
         var systemImageName: String {
             switch self {
             case .workouts:
                 return "figure.run.square.stack"
             case .exercises:
+                return "figure"
+            case .sets:
                 return "figure"
             }
         }
@@ -43,6 +46,14 @@ struct ContentView: View {
                 Label(Tab.exercises.rawValue, systemImage: Tab.exercises.systemImageName)
             }
             .tag(Tab.exercises)
+            
+            NavigationStack {
+                ExerciseSetTab()
+            }
+            .tabItem {
+                Label(Tab.sets.rawValue, systemImage: Tab.sets.systemImageName)
+            }
+            .tag(Tab.sets)
         }
     }
 }

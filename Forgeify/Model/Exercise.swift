@@ -11,17 +11,19 @@ import SwiftData
 @Model
 final class Exercise {
     @Attribute(.unique) var id: UUID
-    @Attribute(.unique) var title: String
+    var title: String
     
-    @Relationship(deleteRule: .cascade, inverse: \WorkoutExercise.exercise)
-    var exercises: [WorkoutExercise] = [WorkoutExercise]()
+    @Relationship(deleteRule: .cascade, inverse: \ExerciseSet.exercise)
+    var exerciseSets: [ExerciseSet] = [ExerciseSet]()
     
-    init(id: UUID = .init(), title: String = "", exercises: [WorkoutExercise] = []) {
+    init(id: UUID = .init(), title: String, sets: [ExerciseSet] = []) {
         self.id = id
         self.title = title
-        self.exercises = exercises
+        self.exerciseSets = sets
     }
 }
+
+extension Exercise: Hashable { }
 
 // MARK: - Preview data
 extension Exercise {
