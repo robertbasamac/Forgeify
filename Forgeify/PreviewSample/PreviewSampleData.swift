@@ -21,7 +21,7 @@ actor PreviewSampleData {
     }()
 
     static var inMemoryContainer: () throws -> ModelContainer = {
-        let schema = Schema([Workout.self, Exercise.self])
+        let schema = Schema([Workout.self, WorkoutExercise.self, Exercise.self])
         let configuration = ModelConfiguration(isStoredInMemoryOnly: true)
         let container = try! ModelContainer(for: schema, configurations: [configuration])
         
@@ -47,7 +47,7 @@ actor PreviewSampleData {
     }
     
     static var emptyInMemoryContainer: () throws -> ModelContainer = {
-        let schema = Schema([Workout.self, Exercise.self])
+        let schema = Schema([Workout.self, WorkoutExercise.self, Exercise.self])
         let configuration = ModelConfiguration(isStoredInMemoryOnly: true)
         let container = try! ModelContainer(for: schema, configurations: [configuration])
         

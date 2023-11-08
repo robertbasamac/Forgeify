@@ -23,7 +23,7 @@ struct ModelContainerPreview<Content: View>: View {
     ///                 WorkoutListItem(workout: Workout.previewWorkout)
     ///             }
     ///         } modelContainer: {
-    ///             let schema = Schema([Workout.self, WorkoutExercise.self])
+    ///             let schema = Schema([Workout.self, WorkoutExercise.self, WorkoutExercise.self])
     ///             let configuration = ModelConfiguration(inMemory: true)
     ///             let container = try! ModelContainer(for: schema, configurations: [configuration])
     ///             let sampleData: [any PersistentModel] = [

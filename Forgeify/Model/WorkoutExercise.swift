@@ -14,11 +14,19 @@ final class WorkoutExercise {
     var exercise: Exercise?
     var workout: Workout?
     var sets: [ExerciseSet] = [ExerciseSet]()
+    var index: Int
     
-    init(id: UUID = .init(), exercise: Exercise, sets: [ExerciseSet] = []) {
+    init(id: UUID = .init(), sets: [ExerciseSet] = [], index: Int = -1) {
+        self.id = id
+        self.sets = sets
+        self.index = index
+    }
+    
+    init(id: UUID = .init(), exercise: Exercise, sets: [ExerciseSet] = [], index: Int = -1) {
         self.id = id
         self.exercise = exercise
         self.sets = sets
+        self.index = index
     }
 }
 

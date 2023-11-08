@@ -13,7 +13,7 @@ struct ExerciseSet: Identifiable, Codable {
     var reps: Int
     var rest: Int
     
-    init(id: UUID = .init(), weight: Int, reps: Int, rest: Int) {
+    init(id: UUID = .init(), weight: Int = 0, reps: Int = 0, rest: Int = 60) {
         self.id = id
         self.weight = weight
         self.reps = reps

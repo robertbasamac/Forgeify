@@ -26,11 +26,17 @@ final class Workout {
 extension Workout {
     @Transient
     var subtitle: String {
-        let exerciseTitles = self.exercises
+        let sortedExercises = exercises.sorted { $0.index < $1.index }
+        let exerciseTitles = sortedExercises
             .compactMap { $0.title.lowercased() }
             .joined(separator: ", ")
         
         return exercises.isEmpty ? "No exercises" : exerciseTitles
+    }
+    
+    @Transient
+    var sortedExercises: [WorkoutExercise] {
+        return exercises.sorted { $0.index < $1.index }
     }
 }
 

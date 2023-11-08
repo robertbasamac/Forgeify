@@ -16,20 +16,20 @@ struct AddWorkoutView: View {
     @State private var showAddExercise: Bool = false
     
     var body: some View {
-        Form {
-            titleSection()
-            exercisesSection()
-            addButton()
-        }
-        .navigationTitle("Create new Workout")
-        .toolbar {
-            toolbarItems()
-        }
-        .navigationDestination(for: WorkoutExercise.self) { exercise in
-            EditWorkoutExerciseView(exercise: exercise)
-        }
-        .navigationDestination(isPresented: $showAddExercise) {
-            ExerciseSelectionView(selections: $exercises)
+        NavigationStack {
+            Form {
+                titleSection()
+                exercisesSection()
+                addButton()
+            }
+            .navigationTitle("Create new Workout")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                toolbarItems()
+            }
+            .navigationDestination(isPresented: $showAddExercise) {
+                ExerciseSelectionView(selections: $exercises)
+            }
         }
     }
 }
@@ -56,7 +56,7 @@ extension AddWorkoutView {
         do {
             try modelContext.save()
         } catch {
-            print("Error saving the context.")
+            print("Error saving context.")
         }
     }
 }
@@ -87,7 +87,11 @@ extension AddWorkoutView {
         if !exercises.isEmpty {
             Section {
                 ForEach(exercises) { exercise in
-                    ExerciseListItem(exercise: exercise)
+                    NavigationLink {
+                        UpdateWorkoutExerciseView(exercise: exercise)
+                    } label: {
+                        ExerciseRowView(exercise: exercise)
+                    }
                 }
                 .onDelete(perform: delete)
                 .onMove(perform: move)
@@ -108,27 +112,24 @@ extension AddWorkoutView {
     
     @ToolbarContentBuilder
     private func toolbarItems() -> some ToolbarContent {
-        ToolbarItem(placement: .cancellationAction) {
-            Button("Cancel") {
-                dismiss()
-            }
+        ToolbarItem(placement: .topBarLeading) {
+            EditButton()
+                .disabled(exercises.isEmpty)
         }
         
-        ToolbarItemGroup(placement: .topBarTrailing) {
-            EditButton()
-            
+        ToolbarItemGroup(placement: .confirmationAction) {
             Button("Save") {
-                let workout = Workout(title: title, exercises: exercises)
-                
-                for exercise in self.exercises {
-                    modelContext.insert(exercise)
+                for index in exercises.indices {
+                    exercises[index].index = index
                 }
+                
+                let workout = Workout(title: title, exercises: exercises)
                 modelContext.insert(workout)
                 
                 do {
                     try modelContext.save()
                 } catch {
-                    print("Error saving the context.")
+                    print("Error saving context.")
                 }
                 
                 dismiss()

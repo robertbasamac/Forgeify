@@ -19,29 +19,60 @@ struct ExercisesTab: View {
         List {
             ForEach(exercises) { exercise in
                 Section {
-                    Text(exercise.title)
+                    NavigationLink {
+                        Text(exercise.title)
+//                        EditExerciseView(exercise: exercise)
+                    } label: {
+                        Text(exercise.title)
+                    }
+
                 }
             }
+            .onDelete(perform: deleteExercises)
         }
+        .navigationTitle("Exercises")
         .listSectionSpacing(.compact)
         .scrollDisabled(exercises.isEmpty)
-        .navigationTitle("Exercises")
         .overlay {
             emptyExerciseView()
         }
         .toolbar {
             toolbarItems()
         }
-        .navigationDestination(for: Workout.self) { workout in
-            WorkoutDetailView(workout: workout)
-        }
-        .fullScreenCover(isPresented: $showAddExercise) {
-            NavigationStack {
-//                AddExerciseView()
-            }
+        .sheet(isPresented: $showAddExercise) {
+            AddExerciseView(onAdd: { _ in })
+                .presentationDragIndicator(.visible)
+                .presentationCornerRadius(25)
         }
     }
 }
+
+// MARK: - Helper Methods
+extension ExercisesTab {
+    private func deleteExercises(at offsets: IndexSet) {
+        withAnimation {
+            offsets.map { exercises[$0] }.forEach(deleteExercise)
+        }
+    }
+    
+    private func deleteExercise(_ exercise: Exercise) {
+        modelContext.delete(exercise)
+        
+        for workoutExercise in exercise.exercises {
+            modelContext.delete(workoutExercise)
+        }
+        save()
+    }
+    
+    private func save() {
+        do {
+            try modelContext.save()
+        } catch {
+            print("Error saving context.")
+        }
+    }
+}
+
 
 // MARK: - Components
 extension ExercisesTab {
@@ -50,7 +81,7 @@ extension ExercisesTab {
         if exercises.isEmpty {
             ContentUnavailableView {
                 Label("No Exercises in your collection.", systemImage: "figure.run.circle")
-            } description: { 
+            } description: {
                 Text("New exercises you create will appear here.\nTap the button below to create a new exercise.")
             } actions: {
                 Button {

@@ -8,27 +8,34 @@
 import SwiftUI
 import SwiftData
 
-struct WorkoutListItem: View {
-    @Environment(\.modelContext) private var modelContext
-    
-    private var workout: Workout
-    
+@Observable
+class WorkoutModel {
+    var workout: Workout
+
     init(workout: Workout) {
         self.workout = workout
     }
+}
+
+struct WorkoutListItem: View {
+    @Environment(\.modelContext) private var modelContext
+    
+    private var workout: WorkoutModel
+    
+    init(workout: Workout) {
+        self.workout = WorkoutModel(workout: workout)
+    }
     
     var body: some View {
-        NavigationLink(value: workout) {
-            VStack(alignment: .leading) {
-                Text(workout.title)
-                    .font(.title3.bold())
-                Divider()
-                Text(workout.subtitle)
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-                    .lineLimit(1)
-                    .italic()
-            }
+        VStack(alignment: .leading) {
+            Text(workout.workout.title)
+                .font(.title3.bold())
+            Divider()
+            Text(workout.workout.subtitle)
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+                .lineLimit(1)
+                .italic()
         }
     }
 }

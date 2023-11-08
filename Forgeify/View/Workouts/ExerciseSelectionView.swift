@@ -23,16 +23,17 @@ struct ExerciseSelectionView: View {
     
     var body: some View {
         List {
-            ForEach(exercises){ exercise in
+            ForEach(exercises) { exercise in
                 HStack {
                     Image(systemName: getItemCheckmark(for: exercise))
                     Text(exercise.title)
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .contentShape(.rect)
                 .onTapGesture {
                     handleSelection(of: exercise)
                 }
             }
-            .onDelete(perform: deleteExercises)
         }
         .navigationTitle("Add Exercises")
         .scrollDisabled(exercises.isEmpty)
@@ -44,10 +45,7 @@ struct ExerciseSelectionView: View {
         }
         .navigationDestination(isPresented: $showAddExercise) {
             AddExerciseView() { exercise in
-                let workoutExercise = WorkoutExercise(exercise: exercise)
-                exercise.exercises.append(workoutExercise)
-                
-                selections.append(workoutExercise)
+                handleSelection(of: exercise)
             }
         }
     }
@@ -59,35 +57,14 @@ extension ExerciseSelectionView {
         if selections.contains(where: { $0.exercise == exercise }) {
             selections.removeAll { $0.exercise == exercise }
         } else {
-            let workoutExercise = WorkoutExercise(exercise: exercise)
+            let workoutExercise = WorkoutExercise()
+            workoutExercise.exercise = exercise
             selections.append(workoutExercise)
         }
     }
     
     private func getItemCheckmark(for exercise: Exercise) -> String {
         return selections.contains(where: { $0.exercise == exercise }) ? "checkmark.circle.fill" : "circle"
-    }
-    
-    private func deleteExercises(at offsets: IndexSet) {
-        withAnimation {
-            offsets.map { exercises[$0] }.forEach { exercise in
-                selections.removeAll { $0.id == exercise.id }
-                deleteExercise(exercise)
-            }
-        }
-    }
-    
-    private func deleteExercise(_ exercise: Exercise) {
-        modelContext.delete(exercise)
-        save()
-    }
-    
-    private func save() {
-        do {
-            try modelContext.save()
-        } catch {
-            print("Error saving context.")
-        }
     }
  }
 

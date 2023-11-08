@@ -18,27 +18,28 @@ struct WorkoutsTab: View {
         List {
             ForEach(workouts) { workout in
                 Section {
-                    WorkoutListItem(workout: workout)
+                    NavigationLink {
+                        WorkoutDetailView(workout: workout)
+                    } label: {
+                        WorkoutListItem(workout: workout)
+                    }
                 }
             }
             .onDelete(perform: deleteWorkouts)
         }
         .navigationTitle("Workouts")
-        .scrollDisabled(workouts.isEmpty)
         .listSectionSpacing(.compact)
+        .scrollDisabled(workouts.isEmpty)
         .overlay {
             emptyWorkoutsView()
         }
         .toolbar {
             toolbarItems()
         }
-        .navigationDestination(for: Workout.self) { workout in
-            WorkoutDetailView(workout: workout)
-        }
-        .fullScreenCover(isPresented: $showAddWorkout) {
-            NavigationStack {
-                AddWorkoutView()
-            }
+        .sheet(isPresented: $showAddWorkout) {
+            AddWorkoutView()
+                .presentationDragIndicator(.visible)
+                .presentationCornerRadius(25)
         }
     }
 }
@@ -53,6 +54,10 @@ extension WorkoutsTab {
     
     private func deleteWorkout(_ workout: Workout) {
         modelContext.delete(workout)
+        
+        for exercise in workout.exercises {
+            modelContext.delete(exercise)
+        }
         save()
     }
     

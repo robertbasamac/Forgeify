@@ -16,27 +16,30 @@ struct AddExerciseView: View {
     var onAdd: (Exercise) -> Void
     
     var body: some View {
-        Form {
-            Section {
-                TextField("Enter title here…", text: $title)
-                    .padding(.trailing, 30)
-                    .overlay(alignment: .trailing) {
-                        Button {
-                            title = ""
-                        } label: {
-                            Image(systemName: "xmark.circle")
-                                .foregroundStyle(.secondary)
+        NavigationStack {
+            Form {
+                Section {
+                    TextField("Enter title here…", text: $title)
+                        .padding(.trailing, 30)
+                        .overlay(alignment: .trailing) {
+                            Button {
+                                title = ""
+                            } label: {
+                                Image(systemName: "xmark.circle")
+                                    .foregroundStyle(.secondary)
+                            }
+                            .buttonStyle(.plain)
+                            .opacity(title.isEmpty ? 0 : 1)
                         }
-                        .buttonStyle(.plain)
-                        .opacity(title.isEmpty ? 0 : 1)
-                    }
-            } header: {
-                Text("Exercise Title")
+                } header: {
+                    Text("Exercise Title")
+                }
             }
-        }
-        .navigationTitle("Create new Exercise")
-        .toolbar {
-            toolbarItems()
+            .navigationTitle("Create new Exercise")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                toolbarItems()
+            }
         }
     }
 }
@@ -52,9 +55,7 @@ extension AddExerciseView {
 extension AddExerciseView {
     @ToolbarContentBuilder
     private func toolbarItems() -> some ToolbarContent {
-        ToolbarItemGroup(placement: .topBarTrailing) {
-            EditButton()
-            
+        ToolbarItem(placement: .confirmationAction) {            
             Button("Save") {
                 let exercise = Exercise(title: title)
                 modelContext.insert(exercise)
