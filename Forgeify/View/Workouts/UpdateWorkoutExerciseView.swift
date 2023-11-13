@@ -18,8 +18,6 @@ struct UpdateWorkoutExerciseView: View {
     @State private var exerciseSets: [ExerciseSet] = []
     @State private var selectedSet: ExerciseSet?
     
-//    @State private var showAddSet: Bool = false
-    
     init(exercise: WorkoutExercise) {
         self.exercise = exercise
         self._exerciseSets = State(initialValue: exercise.sets)
@@ -137,25 +135,6 @@ extension UpdateWorkoutExerciseView {
                 .onMove(perform: move)
                 .listRowInsets(.init(top: 0, leading: 30, bottom: 0, trailing: 30))
             } header: {
-                Text("Sets")
-            }
-        }
-    }
-    
-    @ViewBuilder
-    private func setsSection2() -> some View {
-        if !exerciseSets.isEmpty {
-            Section {
-                ForEach(exerciseSets) { exerciseSet in
-                    HStack {
-                        Text("Weight: \(exerciseSet.weight)")
-                        Text("Reps: \(exerciseSet.reps)")
-                        Text("Rest: \(exerciseSet.rest)")
-                    }
-                }
-                .onDelete(perform: delete)
-                .onMove(perform: move)
-            }  header: {
                 Text("Sets")
             }
         }
